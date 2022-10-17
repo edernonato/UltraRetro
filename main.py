@@ -1,20 +1,29 @@
 from tkinter import *
 
+import subprocess
 import os
 BACKGROUND_COLOR = "Black"
 
 
 def access_emulator():
     print(f"Opening ")
-    os.system('mednafen /home/eder/roms/mega/SOR.zip')
+    path = "/home/eder/roms/mega/"
+    roms = os.listdir(path)
+    print(roms)
+    open_rom(roms[0])
 
+
+
+def open_rom(rom):
+    print(rom)
+    os.system(f"mednafen /home/eder/roms/mega/'{rom}'")
 
 window = Tk()
 window.title("UltraRetro")
 window.attributes("-fullscreen", True)
 window.config(padx=0, pady=0, background=BACKGROUND_COLOR)
 
-bg = PhotoImage(file="images/bg_img.png")
+bg = PhotoImage(file="/home/eder/Desktop/UltraRetro/UltraRetro/Images/bg_img.png")
 label1 = Label(window, image=bg)
 label1.place(x=0, y=0)
 
