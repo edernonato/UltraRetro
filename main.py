@@ -20,12 +20,12 @@ def open_rom(rom):
 
 window = Tk()
 window.title("UltraRetro")
-window.attributes("-fullscreen", True)
-window.config(padx=0, pady=0, background=BACKGROUND_COLOR)
+window.geometry("1920x1080")
+window.config(padx=0, pady=0, background="White")
 
-bg = PhotoImage(file="/home/eder/UltraRetro/UltraRetroImages/bg_img.png")
-label1 = Label(window, image=bg, )
-label1.place(x=0, y=0, anchor="center")
+bg = PhotoImage(file="/home/eder/Desktop/UltraRetro/UltraRetro/Images/bg_img.png")
+label1 = Label(window, image=bg)
+label1.place(x=0, y=0, relwidth=1, relheight=1)
 
 
 mega_drive_button = Button(fg="white", width=30, height=5, text="MEGA DRIVE", font=("Arial", 12, "italic"), highlightcolor="White", highlightthickness=0, bg="Black", command=access_emulator)
