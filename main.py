@@ -1,7 +1,9 @@
 from tkinter import *
 import matplotlib
 import os
+import pexpect
 from functools import partial
+
 
 matplotlib.use('Agg')
 BACKGROUND_COLOR = "Black"
@@ -16,7 +18,7 @@ def access_emulator(emulator):
     game_window.title("Emulator Window")
     game_window.geometry("1920x1080")
     game_window.config(padx=0, pady=0, background="Black")
-    bg = PhotoImage(file=f"Images/{emulator}.png")
+    bg = PhotoImage(file=f"/home/eder/Desktop/UltraRetro/UltraRetro/Images/{emulator}.png")
     label_mega = Label(game_window, image=bg, background="Black")
     label_mega.place(x=0, y=0, relwidth=1, relheight=1)
     for index in range(len(roms)):
@@ -34,7 +36,7 @@ def access_emulator(emulator):
 
 
 def open_rom(emulator, rom):
-    os.system(f"mednafen /usr/games/roms/{emulator}/'{rom}'")
+    os.system(f"/usr/games/mednafen /usr/games/roms/{emulator}/'{rom}'")
 
 
 def listing_roms(rom):
@@ -47,7 +49,7 @@ def create_window():
 
 
 def initial_screen():
-    bg = PhotoImage(file="Images/bg_img.png")
+    bg = PhotoImage(file="/home/eder/Desktop/UltraRetro/UltraRetro/Images/bg_img.png")
     window.title("UltraRetro")
     window.geometry("1920x1080")
     window.config(padx=0, pady=0, background="White")
