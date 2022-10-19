@@ -35,7 +35,7 @@ def access_emulator(emulator, index, janela):
                                     command=chosen_rom)
             game_button.grid(row=i - index, column=0, columnspan=2, padx=10, pady=5)
 
-    exit_button = Button(fg="white", width=30, height=2, text="Exit", font=("Arial", 8, "italic"),
+    exit_button = Button(fg="white", width=30, height=2, text="Back", font=("Arial", 8, "italic"),
                             highlightcolor="White", highlightthickness=0, bg="Black",
                             command=lambda: [game_window.destroy(), create_window(), initial_screen()])
     exit_button.grid(row=0, column=2, columnspan=2)
@@ -87,16 +87,16 @@ def initial_screen():
 
     mega_drive_button = Button(fg="white", width=30, height=5, text="MEGA DRIVE", font=("Arial", 12, "italic"),
                                highlightcolor="White", highlightthickness=0, bg="Black", command=access_mega)
-    mega_drive_button.grid(row=0, column=0, columnspan=2)
+    mega_drive_button.grid(row=0, column=0, columnspan=2, pady=10)
 
     access_snes = partial(access_emulator, 'snes', 0, window)
     snes_button = Button(fg="white", width=30, height=5, text="SUPER NINTENDO", font=("Arial", 12, "italic"),
                          highlightcolor="White", highlightthickness=0, bg="Black", command=access_snes)
-    snes_button.grid(row=1, column=0, columnspan=2)
+    snes_button.grid(row=1, column=0, columnspan=2, pady=10)
     exit_button = Button(fg="white", width=30, height=5, text="Exit", font=("Arial", 8, "italic"),
                          highlightcolor="White", highlightthickness=0, bg="Black",
                          command=window.destroy)
-    exit_button.grid(row=2, column=0, columnspan=2)
+    exit_button.grid(row=2, column=0, columnspan=2, pady=10)
 
     window.mainloop()
 
