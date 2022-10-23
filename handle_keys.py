@@ -8,3 +8,4 @@ def on_key_press(event):
         move_focus_up()
     elif event.char.lower() == "b":
         back_to_menu()
+

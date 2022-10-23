@@ -3,10 +3,12 @@ from tkinter import *
 from functools import partial
 from start_window import initial_screen
 from PIL import Image, ImageTk
+from threading import Thread
 
 
-DEFAULT_ULTRA_RETRO_PATH = "C:/Users/Eder/PycharmProjects/UltraRetro"
-ROMS_FOLDER = "G:/roms/UltraRetro"
+
+DEFAULT_ULTRA_RETRO_PATH = "/home/eder/Desktop/UltraRetro/UltraRetro"
+ROMS_FOLDER = "/usr/games/roms"
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
 global buttons
@@ -15,9 +17,10 @@ global current_index
 global roms
 global current_rom
 global final_index
+global overlay_img
 current_rom_focus = None
 current_focus = None
-DEFAULT_BG = "Images/bg_img.png"
+#DEFAULT_BG = "Images/bg_img.png"
 
 
 def window_type(janela):
@@ -91,8 +94,30 @@ def create_emulators(name, index):
     emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
 
 
+def open_overlay(emulator, rom):
+    global overlay_img
+    global DEFAULT_ULTRA_RETRO_PATH
+    global window         
+    image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/overlay/7th Saga, The (USA).png")
+    img = ImageTk.PhotoImage(image1)    
+    overlay_img = Label(image=img)
+    overlay_img.place(x=0, y=0)
+    func1 = partial(open_rom, emulator, rom)    
+    Thread(target = func1).start()
+    Thread(target = window.mainloop()).start()
+    
+
+
+def close_overlay():
+    global overlay_img
+    overlay_img.destroy()    
+    
+
 def open_rom(emulator, rom):
-    os.system(f"/usr/games/mednafen {ROMS_FOLDER}/{emulator}/'{rom}'")
+    os.system(f"/usr/games/mednafen '{ROMS_FOLDER}/{emulator}/{rom}'")
+    close_overlay() 
+    
+        
 
 
 def generate_roms(rom_games, index, final_index_roms, emulator):
@@ -102,11 +127,10 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
     final_index = final_index_roms
     if final_index > len(rom_games):
         final_index = len(rom_games)
-
     buttons = {}
     for i in range(index, final_index):
         if i <= len(rom_games):
-            chosen_rom = partial(open_rom, emulator, rom_games[i])
+            chosen_rom = partial(open_overlay, emulator, rom_games[i])
             buttons[rom_games[i]] = Button(fg="white", width=50, height=2, text=rom_games[i],
                                            font=("Arial", 10, "italic"), highlightcolor="White",
                                            highlightthickness=0, bg="Black", command=chosen_rom,
@@ -119,6 +143,7 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
 
 def move_focus_down():
     global current_index
+    global DEFAULT_ULTRA_RETRO_PATH
     button = window.winfo_children()[current_index]
     button.configure(bg="Black")
     if current_index >= len(window.winfo_children()) - 1:
@@ -133,7 +158,7 @@ def move_focus_down():
         button.focus()
         button_text = button.cget('text')
         button_text = button_text.replace(".zip", ".png")
-        image1 = Image.open(f"Images/Games/{button_text}")
+        image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/{button_text}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
         img = ""
@@ -144,6 +169,7 @@ def move_focus_down():
 
 def move_focus_up():
     global current_index
+    global DEFAULT_ULTRA_RETRO_PATH
     display_game_img("")
     button = window.winfo_children()[current_index]
     button.configure(bg="Black")
@@ -158,7 +184,7 @@ def move_focus_up():
         button.focus()
         button_text = button.cget('text')
         button_text = button_text.replace(".zip", ".png")
-        image1 = Image.open(f"Images/Games/{button_text}")
+        image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/{button_text}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
         img = ""

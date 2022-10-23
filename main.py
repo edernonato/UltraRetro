@@ -18,9 +18,8 @@ def start():
     initial_screen(window)
     window_type(window)
     create_emulators_list()
-    generate_exit_button()
-    window.bind('<KeyPress>', on_key_press)
+    generate_exit_button()  
+    window.bind('<KeyPress>', on_key_press)  
     window.mainloop()
-
 
 start()
