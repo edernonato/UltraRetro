@@ -1,0 +1,9 @@
+#!/bin/bash
+repeat="1"
+totalfiles=$( expr `ls *-image* | wc -l` + 1 )
+while [ "$repeat" != "$totalfiles" ]; do
+name=$( ls *-image* | head -n$repeat | tail -n1 )
+newname=$( ls *-image* | head -n$repeat | tail -n1 | sed 's/-image//g' )
+mv "$name" "$newname"
+repeat=$( expr $repeat + 1 )
+done

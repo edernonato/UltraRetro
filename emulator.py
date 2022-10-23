@@ -3,27 +3,10 @@ from tkinter import *
 from functools import partial
 from start_window import initial_screen
 from PIL import Image, ImageTk
-from pynput import keyboard
-from pynput.keyboard import Key
 
 
-# def on_press(key):
-#     pass
-#
-#
-# def on_release(key):
-#     if(key==Key.s):
-#         move_focus_down()
-#
-#
-# with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-#     listener.join()
-
-
-# keyboard.add_hotkey('s', lambda: move_focus_down())
-
-DEFAULT_ULTRA_RETRO_PATH = "/home/Eder/Desktop/UltraRetro/UltraRetro"
-ROMS_FOLDER = "/Usr/games/roms"
+DEFAULT_ULTRA_RETRO_PATH = "C:/Users/Eder/PycharmProjects/UltraRetro"
+ROMS_FOLDER = "G:/roms/UltraRetro"
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
 global buttons
@@ -31,10 +14,9 @@ global label_images
 global current_index
 global roms
 global current_rom
-
+global final_index
 current_rom_focus = None
 current_focus = None
-# global roms
 DEFAULT_BG = "Images/bg_img.png"
 
 
@@ -45,12 +27,15 @@ def window_type(janela):
     global current_index
     window = janela
     label_images = {}
-    current_index = 0
+    current_index = 1
     DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
 
 
 def access_emulator(emulator, index):
     global roms
+    global current_index
+    global final_index
+    current_index = 0
     remove_widgets(window)
     path = f"{ROMS_FOLDER}/{emulator}/"
     roms = os.listdir(path)
@@ -84,6 +69,7 @@ def generate_up_button(index, emulator):
 
 
 def generate_down_button(len_roms, index, emulator):
+    global final_index
     final_index = index + 22
     if len_roms > 22:
         down_button_clicked = partial(access_emulator, emulator, final_index)
@@ -109,123 +95,90 @@ def open_rom(emulator, rom):
     os.system(f"/usr/games/mednafen {ROMS_FOLDER}/{emulator}/'{rom}'")
 
 
-def generate_roms(roms, index, final_index, emulator):
+def generate_roms(rom_games, index, final_index_roms, emulator):
     global buttons
     global current_rom_focus
-    if final_index > len(roms):
-        final_index = len(roms)
+    global final_index
+    final_index = final_index_roms
+    if final_index > len(rom_games):
+        final_index = len(rom_games)
 
     buttons = {}
     for i in range(index, final_index):
-        if i <= len(roms):
-            chosen_rom = partial(open_rom, emulator, roms[i])
-            buttons[roms[i]] = Button(fg="white", width=50, height=2, text=roms[i], font=("Arial", 10, "italic"),
-                                    highlightcolor="White", highlightthickness=0, bg="Black",
-                                    command=chosen_rom, activeforeground="Red", cursor="man", takefocus=1)
-            buttons[roms[i]].grid(row=i - index, column=0, columnspan=3, padx=10, pady=5)
+        if i <= len(rom_games):
+            chosen_rom = partial(open_rom, emulator, rom_games[i])
+            buttons[rom_games[i]] = Button(fg="white", width=50, height=2, text=rom_games[i],
+                                           font=("Arial", 10, "italic"), highlightcolor="White",
+                                           highlightthickness=0, bg="Black", command=chosen_rom,
+                                           activeforeground="Red", cursor="man", takefocus=1)
+            buttons[rom_games[i]].grid(row=i - index, column=0, columnspan=3, padx=10, pady=5)
 
-    buttons[roms[index]].focus()
-    current_rom_focus = buttons[roms[index]]
+    buttons[rom_games[index]].focus()
+    current_rom_focus = buttons[rom_games[index]]
 
 
 def move_focus_down():
-    global current_rom_focus
-    print(current_rom_focus)
-    focus = False
-    for key in buttons.keys():
-        if focus:
-            buttons[key].focus()
-            buttons[key].flash()
-            current_rom_focus = buttons[key]
-            print(key)
-            try:
-                key = key.replace(".smc", ".png")
-                print(key)
-                image1 = Image.open(f"Images/Games/{key}.png")
-                img = ImageTk.PhotoImage(image1)
-            except:
-                img = ""
-            return display_game_img(img)
-        if current_rom_focus == buttons[key]:
-            focus = True
+    global current_index
+    button = window.winfo_children()[current_index]
+    button.configure(bg="Black")
+    if current_index >= len(window.winfo_children()) - 1:
+        current_index = 1
+        button = window.winfo_children()[current_index]
+    else:
+        current_index += 1
+        button = window.winfo_children()[current_index]
 
-    # Implementation using global variable current_index
-    # global current_index
-    # if current_index >= len(window.winfo_children()):
-    #     return
-    # for widget_index in range(len(window.winfo_children()) - 4):
-    #     if widget_index == current_index + 1:
-    #         current_index += 1
-    #         window.winfo_children()[widget_index].focus()
-    #         window.winfo_children()[widget_index].flash()
+    # noinspection PyBroadException
+    try:
+        button.focus()
+        button_text = button.cget('text')
+        button_text = button_text.replace(".zip", ".png")
+        image1 = Image.open(f"Images/Games/{button_text}")
+        img = ImageTk.PhotoImage(image1)
+    except Exception:
+        img = ""
 
-    # display_game_img()
+    button.configure(bg="Red")
+    return display_game_img(img)
 
 
 def move_focus_up():
-    global current_rom_focus
-    focus = False
-    reverse_buttons = reversed(sorted(buttons.keys()))
-    for key in reverse_buttons:
-        if focus:
-            buttons[key].focus()
-            buttons[key].flash()
-            current_rom_focus = buttons[key]
-            print(key)
-            try:
-                key = key.replace(".smc", ".png")
-                image1 = Image.open(f"Images/Games/{key}.png")
-                img = ImageTk.PhotoImage(image1)
-            except:
-                img = ""
-            return display_game_img(img)
-        if current_rom_focus == buttons[key]:
-            focus = True
+    global current_index
+    display_game_img("")
+    button = window.winfo_children()[current_index]
+    button.configure(bg="Black")
+    if current_index <= 1:
+        current_index = len(window.winfo_children()) - 1
+        button = window.winfo_children()[current_index]
+    else:
+        current_index -= 1
+        button = window.winfo_children()[current_index]
+    # noinspection PyBroadException
+    try:
+        button.focus()
+        button_text = button.cget('text')
+        button_text = button_text.replace(".zip", ".png")
+        image1 = Image.open(f"Images/Games/{button_text}")
+        img = ImageTk.PhotoImage(image1)
+    except Exception:
+        img = ""
 
-    # global current_index
-    # print(current_index)
-    # if current_index <= 0:
-    #     return
-    # for widget_index in range(len(window.winfo_children()) - 4):
-    #     if widget_index == current_index - 1:
-    #         current_index -= 1
-    #         window.winfo_children()[widget_index].focus()
-    #         window.winfo_children()[widget_index].flash()
-    # display_game_img()
-
-
-
-
-
-# def display_game_img():
-#     global label_images
-#     global roms
-#     rom = roms[current_index]
-#     print(rom)
-#     try:
-#         image1 = Image.open(f"Images/Games/{rom}.png")
-#         img = ImageTk.PhotoImage(image1)
-#     except:
-#         for values in label_images.values():
-#             values.destroy()
-#         return
-#
-#     global window
-#     label_image = Label(image=img)
-#     label_image.place(x=800, y=250)
-#     label_images[img] = label_image
-#     window.mainloop()
+    button.configure(bg="Red")
+    return display_game_img(img)
 
 
 def display_game_img(image):
     global label_images
+    for values in label_images.values():
+        values.destroy()
+
     if image == '':
         for values in label_images.values():
             values.destroy()
         return
     global window
     label_image = Label(image=image)
-    label_image.place(x=800, y=250)
+    label_image.place(x=700, y=150)
     label_images[image] = label_image
     window.mainloop()
 

@@ -2,18 +2,241 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7779526-d00d-4a3e-8944-0061a5bfcca6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (U).png.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (U).s.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Games/7th Saga, The (U) [!].jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Games/7th Saga, The (U) [!].png.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/UltraRetro.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/UltraRetro.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/10 Super Jogos (Brazil).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/16 Tiles Mahjong .bin.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/16-Bit Rhythm Land - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/16-Bit Rhythm Land.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/2020 Super Baseball (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/3x3 Eyes - Juuma Houkan (Japan) (T).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/6-Pak (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/6-Pak (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/688 Attack Sub (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/688 Attack Sub (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/7th Saga (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/7th Saga, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/90 Minutes - European Prime Goal (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/A Ressha de Gyoukou MD (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/A.S.P. - Air Strike Patrol (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/AAAHH!!! Real Monsters (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/AAAHH!!! Real Monsters (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ABC Monday Night Football (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ACME Animation Factory (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ATP Tour (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ATP Tour Championship Tennis (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ATP Tour Championship Tennis (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/AWS Pro Moves Soccer (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aaahh!!! Real Monsters (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aaahh!!! Real Monsters (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Accele Brid (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ace o Nerae! (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Acrobat Mission (Japan) (En).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ActRaiser (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ActRaiser (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ActRaiser (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ActRaiser 2 (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/ActRaiser 2 (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Action 52 (USA) (Unl) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Action 52 (USA) (Unl).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Action Pachio (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Actraiser 2 (Europe) (En,Fr,De).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family Values (Europe) (En,Fr,De) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family Values (Europe) (En,Fr,De).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family Values (USA) (En,Fr,De).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The (USA) (Beta).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The - Pugsley's Scavenger Hunt (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Addams Family, The - Pugsley's Scavenger Hunt (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Busterhawk Gleylancer (Japan) (T) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Busterhawk Gleylancer (Japan) (T).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Daisenryaku (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Daisenryaku - Deutsch Dengeki Sakusen (Japan) (Rev A) (T) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Daisenryaku - Deutsch Dengeki Sakusen (Japan) (Rev A) (T).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Dungeons &amp; Dragons - Eye of the Beholder (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Advanced Dungeons _ Dragons - Eye of the Beholder (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Batman &amp; Robin, The (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Batman &amp; Robin, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Batman _ Robin, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Batman and Robin, The (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Dr. Franken, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Kid Kleets, The (USA) (En,Fr,Es).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Mighty Max, The (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Mighty Max, The (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Mighty Max, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Rocky and Bullwinkle and Friends, The (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Rocky and Bullwinkle and Friends, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Adventures of Yogi Bear (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero Blasters (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero Fighters (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero Fighters (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat 2 (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat 2 (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aero the Acro-Bat 2 (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aerobiz (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aerobiz (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aerobiz (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aerobiz Supersonic (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aerobiz Supersonic (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/After Burner II (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/After Burner II (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/After Burner II (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/After Burner II (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aguri Suzuki F-1 Super Driving (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aim for the Ace! (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Buster (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Buster (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Cavalry (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Cavalry (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Diver (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Diver (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Air Strike Patrol (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Akira_(Prototype) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Akira_(Prototype).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Al Unser Jr.'s Road to the Top (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (BR) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (HK).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin II (Taiwan) (En) (Unl) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aladdin II (Taiwan) (En) (Unl).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alcahest (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alcahest (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alex Kidd - Tenkuu Majou (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alex Kidd in the Enchanted Castle (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alex Kidd in the Enchanted Castle (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alex Kidd in the Enchanted Castle (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alfred Chicken (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien 3 (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien 3 (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien 3 (USA, Europe) (Rev A) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien 3 (USA, Europe) (Rev A).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien 3 (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien Soldier (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien Soldier (Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien Soldier (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien Storm (World) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien Storm (World).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien vs Predator (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien vs. Predator (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alien vs. Predator (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alisia Dragoon (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alisia Dragoon (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alisia Dragoon (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Alisia Dragoon (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/All-American Championship Football (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Altered Beast (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Altered Beast (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Altered Beast (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Amazing Spider-Man, The - Lethal Foes (Japan) (T).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Amazing Spider-Man, The - Lethal Foes (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/American Battle Dome (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/American Gladiators (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/American Gladiators (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/American Tail, An - Fievel Goes West (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Andre Agassi Tennis (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Andre Agassi Tennis (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Angelique (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Animaniacs (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Animaniacs (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Animaniacs (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Another World (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Apocalypse II (Europe) (Proto).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aquatic Games Starring James Pond and the Aquabats, The (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aquatic Games Starring James Pond and the Aquabats, The (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arabian Nights - Desert Spirit King (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Araiguma Rascal (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcade Classics (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcade Classics (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcade's Greatest Hits - The Atari Collection 1 (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcana (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcana (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arch Rivals - The Arcade Game (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arch Rivals - The Arcade Game (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Archer Maclean's Super Dropzone (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcus Odyssey (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arcus Odyssey (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ardy Lightfoot (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ariel the Little Mermaid (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ariel the Little Mermaid (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arkanoid - Doh It Again (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arkanoid Doh It Again (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arnold Palmer Tournament Golf (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arnold Palmer Tournament Golf (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arrow Flash (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arrow Flash (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Arrow Flash (USA, Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Art Alive (World) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Art Alive (World).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Art of Fighting (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Art of Fighting (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ashita no Joe (Japan) (T).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Assault Suits Valken (J).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix &amp; Obelix (Europe) (En,Fr,De,Es).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix (Europe) (En,Fr,De,Es).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix _ Obelix (Europe) (En,Fr,De,Es).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix and the Great Rescue (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix and the Great Rescue (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix and the Power of the Gods (Europe) (En,Fr,De,Es) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Asterix and the Power of the Gods (Europe) (En,Fr,De,Es).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Atomic Robo-Kid (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Atomic Robo-Kid (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Atomic Runner (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Atomic Runner (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Atomic Runner (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Australian Rugby League (Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Australian Rugby League (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Awesome Possum (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Awesome Possum... ...Kicks Dr. Machino's Butt (USA) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Awesome Possum... ...Kicks Dr. Machino's Butt (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Aworg (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Axelay (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ayrton Senna Super Monaco GP II (BR).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ayrton Senna's Super Monaco GP II (USA) (En,Ja) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Ayrton Senna's Super Monaco GP II (USA) (En,Ja).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/B.O.B. (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/B.O.B. (USA, Europe) - Copia.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/BASS Masters Classic (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/BASS Masters Classic - Pro Edition (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Foreman For Real (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Lufia &amp; The Fortress of Doom (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Out of This World (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/2020 Super Baseball (U).png.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/3 Ninjas Kick Back (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/7th Saga, The (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/90 Minutes - European Prime Goal (Europe).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/A.S.P.  Air Strike Patrol (U).png.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/ABC Monday Night Football (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/ACME Animation Factory (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/Aaahh!!! Real Monsters (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/ActRaiser (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/ActRaiser 2 (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Overlay/Addams Family Values (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/Pac-in-Time (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/SkulJagger - Revolt of the Westicans (USA).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/[SegaNet] 16t (Japan).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/actraiser.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/albert odyssey.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/Games/arkanoid - doh it again.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handle_keys.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/mega.png" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Mega Drive.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/nes.png" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Nintendo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/snes.png" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Super Nintendo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (U).png.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/Games/3 Ninjas Kick Back (U).s.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/Games/7th Saga, The (U) [!].jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Images/Games/7th Saga, The (U) [!].png.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/emulator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/start_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
