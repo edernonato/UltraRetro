@@ -6,8 +6,7 @@ from PIL import Image, ImageTk
 from threading import Thread
 
 
-
-DEFAULT_ULTRA_RETRO_PATH = "/home/eder/Desktop/UltraRetro/UltraRetro"
+DEFAULT_ULTRA_RETRO_PATH = "/home/complex/Desktop/UltraRetro/UltraRetro"
 ROMS_FOLDER = "/usr/games/roms"
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
@@ -18,9 +17,9 @@ global roms
 global current_rom
 global final_index
 global overlay_img
+global DEFAULT_BG
 current_rom_focus = None
 current_focus = None
-#DEFAULT_BG = "Images/bg_img.png"
 
 
 def window_type(janela):
@@ -57,6 +56,7 @@ def access_emulator(emulator, index):
     back_button.grid(row=0, column=4, columnspan=2)
     generate_up_button(index, emulator)
     generate_down_button(len(roms), index, emulator)
+    move_focus_down()
     window.mainloop()
 
 
@@ -85,6 +85,11 @@ def generate_down_button(len_roms, index, emulator):
     down_button.grid(row=2, column=4, columnspan=2)
 
 
+def create_emulators_list():
+    for emulator in EMULATOR_LIST:
+        create_emulators(emulator, EMULATOR_LIST.index(emulator))
+
+
 def create_emulators(name, index):
     global current_index
     current_index = 0
@@ -92,6 +97,7 @@ def create_emulators(name, index):
     emulator_button = Button(fg="white", width=30, height=5, text=name, font=("Arial", 12, "italic"),
                              highlightcolor="White", highlightthickness=0, bg="Black", command=access)
     emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
+    move_focus_down()
 
 
 def open_overlay(emulator, rom):
@@ -103,21 +109,20 @@ def open_overlay(emulator, rom):
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
     func1 = partial(open_rom, emulator, rom)    
-    Thread(target = func1).start()
-    Thread(target = window.mainloop()).start()
-    
+    Thread(target=func1).start()
+    Thread(target=window.mainloop()).start()
 
 
 def close_overlay():
     global overlay_img
-    overlay_img.destroy()    
+    overlay_img.destroy()
+    move_focus_down()
+    move_focus_up()
     
 
 def open_rom(emulator, rom):
     os.system(f"/usr/games/mednafen '{ROMS_FOLDER}/{emulator}/{rom}'")
-    close_overlay() 
-    
-        
+    close_overlay()
 
 
 def generate_roms(rom_games, index, final_index_roms, emulator):
@@ -155,7 +160,7 @@ def move_focus_down():
 
     # noinspection PyBroadException
     try:
-        button.focus()
+        button.focus_force()
         button_text = button.cget('text')
         button_text = button_text.replace(".zip", ".png")
         image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/{button_text}")
@@ -181,7 +186,7 @@ def move_focus_up():
         button = window.winfo_children()[current_index]
     # noinspection PyBroadException
     try:
-        button.focus()
+        button.focus_force()
         button_text = button.cget('text')
         button_text = button_text.replace(".zip", ".png")
         image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/{button_text}")
@@ -225,11 +230,6 @@ def back_to_menu():
     create_emulators_list()
     generate_exit_button()
     window.mainloop()
-
-
-def create_emulators_list():
-    for emulator in EMULATOR_LIST:
-        create_emulators(emulator, EMULATOR_LIST.index(emulator))
 
 
 def generate_exit_button():
