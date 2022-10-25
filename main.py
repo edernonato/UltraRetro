@@ -24,3 +24,5 @@ def start():
 
 
 start()
+
+# pcsxr -cdfile "file"

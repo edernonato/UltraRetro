@@ -8,6 +8,7 @@ from threading import Thread
 
 DEFAULT_ULTRA_RETRO_PATH = "/home/complex/Desktop/UltraRetro/UltraRetro"
 ROMS_FOLDER = "/usr/games/roms"
+Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
 global buttons
@@ -31,6 +32,21 @@ def window_type(janela):
     label_images = {}
     current_index = 1
     DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
+
+
+def create_emulators_list():
+    for emulator in EMULATOR_LIST:
+        create_emulators(emulator, EMULATOR_LIST.index(emulator))
+
+
+def create_emulators(name, index):
+    global current_index
+    current_index = 0
+    access = partial(access_emulator, name, 0)
+    emulator_button = Button(fg="white", width=30, height=5, text=name, font=("Arial", 12, "italic"),
+                             highlightcolor="White", highlightthickness=0, bg="Black", command=access)
+    emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
+    move_focus_down()
 
 
 def access_emulator(emulator, index):
@@ -85,19 +101,12 @@ def generate_down_button(len_roms, index, emulator):
     down_button.grid(row=2, column=4, columnspan=2)
 
 
-def create_emulators_list():
-    for emulator in EMULATOR_LIST:
-        create_emulators(emulator, EMULATOR_LIST.index(emulator))
-
-
-def create_emulators(name, index):
-    global current_index
-    current_index = 0
-    access = partial(access_emulator, name, 0)
-    emulator_button = Button(fg="white", width=30, height=5, text=name, font=("Arial", 12, "italic"),
-                             highlightcolor="White", highlightthickness=0, bg="Black", command=access)
-    emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
-    move_focus_down()
+def open_rom(emulator, rom):
+    if emulator in Applications["Mednafen"]:
+        os.system(f"/usr/games/mednafen '{ROMS_FOLDER}/{emulator}/{rom}'")
+    elif emulator in Applications['PCSXR']:
+        os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
+    close_overlay()
 
 
 def open_overlay(emulator, rom):
@@ -105,7 +114,7 @@ def open_overlay(emulator, rom):
     global DEFAULT_ULTRA_RETRO_PATH
     global window         
     image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/overlay/7th Saga, The (USA).png")
-    img = ImageTk.PhotoImage(image1)    
+    img = ImageTk.PhotoImage(image1)
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
     func1 = partial(open_rom, emulator, rom)    
@@ -118,11 +127,6 @@ def close_overlay():
     overlay_img.destroy()
     move_focus_down()
     move_focus_up()
-    
-
-def open_rom(emulator, rom):
-    os.system(f"/usr/games/mednafen '{ROMS_FOLDER}/{emulator}/{rom}'")
-    close_overlay()
 
 
 def generate_roms(rom_games, index, final_index_roms, emulator):
