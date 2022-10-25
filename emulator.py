@@ -4,10 +4,11 @@ from functools import partial
 from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
+import pygame
+# from controller import find_events
 
-
-DEFAULT_ULTRA_RETRO_PATH = "/home/complex/Desktop/UltraRetro/UltraRetro"
-ROMS_FOLDER = "/usr/games/roms"
+DEFAULT_ULTRA_RETRO_PATH = "C:/Users/Eder/PycharmProjects/UltraRetro"
+ROMS_FOLDER = "G:/roms/UltraRetro"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
@@ -31,7 +32,55 @@ def window_type(janela):
     window = janela
     label_images = {}
     current_index = 1
+    find_events()
     DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
+
+
+def find_events():
+    global window
+    pygame.init()
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+    pygame.init()
+    events = pygame.event.get()
+    if pygame.joystick.get_count() < 1:
+        return
+    joystick = pygame.joystick.Joystick(0)
+    axisX = joystick.get_axis(2)
+    axisY = joystick.get_axis(3)
+
+    A = joystick.get_button(0)
+    B = joystick.get_button(1)
+    X = joystick.get_button(2)
+    Y = joystick.get_button(3)
+    LB = joystick.get_button(4)
+    RB = joystick.get_button(5)
+    LT = joystick.get_button(6)
+    RT = joystick.get_button(7)
+
+    for event in events:
+        # print(event)
+        # event type for pressing any of the joystick buttons down
+        if event.type == pygame.JOYBUTTONDOWN:
+            if A == 1:
+                window.focus_get().invoke()
+            if B == 1:
+                back_to_menu()
+            if LT == 1:
+                window.event_generate('<<LT>>')
+            if RT == 1:
+                window.event_generate('<<RT>>')
+
+        if event.type == pygame.JOYHATMOTION:
+            hats = joystick.get_numhats()
+            for i in range(hats):
+                hat = joystick.get_hat(i)
+                # print(f"HAT ======= {hat}")
+                if hat == (0, -1):
+                    move_focus_down()
+                elif hat == (0, 1):
+                    move_focus_up()
+    window.after(1, find_events)
 
 
 def create_emulators_list():
@@ -53,6 +102,7 @@ def access_emulator(emulator, index):
     global roms
     global current_index
     global final_index
+    find_events()
     current_index = 0
     remove_widgets(window)
     path = f"{ROMS_FOLDER}/{emulator}/"
@@ -173,6 +223,7 @@ def move_focus_down():
         img = ""
 
     button.configure(bg="Red")
+    find_events()
     return display_game_img(img)
 
 
