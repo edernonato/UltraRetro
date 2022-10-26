@@ -4,11 +4,10 @@ from functools import partial
 from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
-import pygame
-# from controller import find_events
 
-DEFAULT_ULTRA_RETRO_PATH = "C:/Users/Eder/PycharmProjects/UltraRetro"
-ROMS_FOLDER = "G:/roms/UltraRetro"
+
+DEFAULT_ULTRA_RETRO_PATH = "/home/complex/Desktop/UltraRetro/UltraRetro"
+ROMS_FOLDER = "/usr/games/roms"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
@@ -20,67 +19,25 @@ global current_rom
 global final_index
 global overlay_img
 global DEFAULT_BG
+global xbox_controller
+global ps2_controller
+global controllers
+global joystick
 current_rom_focus = None
 current_focus = None
 
 
-def window_type(janela):
+def window_type(janela, control):
     global window
     global DEFAULT_BG
     global label_images
     global current_index
+    global joystick
+    joystick = control
     window = janela
     label_images = {}
     current_index = 1
-    find_events()
     DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
-
-
-def find_events():
-    global window
-    pygame.init()
-    joystick = pygame.joystick.Joystick(0)
-    joystick.init()
-    pygame.init()
-    events = pygame.event.get()
-    if pygame.joystick.get_count() < 1:
-        return
-    joystick = pygame.joystick.Joystick(0)
-    axisX = joystick.get_axis(2)
-    axisY = joystick.get_axis(3)
-
-    A = joystick.get_button(0)
-    B = joystick.get_button(1)
-    X = joystick.get_button(2)
-    Y = joystick.get_button(3)
-    LB = joystick.get_button(4)
-    RB = joystick.get_button(5)
-    LT = joystick.get_button(6)
-    RT = joystick.get_button(7)
-
-    for event in events:
-        # print(event)
-        # event type for pressing any of the joystick buttons down
-        if event.type == pygame.JOYBUTTONDOWN:
-            if A == 1:
-                window.focus_get().invoke()
-            if B == 1:
-                back_to_menu()
-            if LT == 1:
-                window.event_generate('<<LT>>')
-            if RT == 1:
-                window.event_generate('<<RT>>')
-
-        if event.type == pygame.JOYHATMOTION:
-            hats = joystick.get_numhats()
-            for i in range(hats):
-                hat = joystick.get_hat(i)
-                # print(f"HAT ======= {hat}")
-                if hat == (0, -1):
-                    move_focus_down()
-                elif hat == (0, 1):
-                    move_focus_up()
-    window.after(1, find_events)
 
 
 def create_emulators_list():
@@ -102,15 +59,18 @@ def access_emulator(emulator, index):
     global roms
     global current_index
     global final_index
-    find_events()
+    global window
+    global joystick
     current_index = 0
     remove_widgets(window)
     path = f"{ROMS_FOLDER}/{emulator}/"
     roms = os.listdir(path)
     roms.sort()
+
     window.title(f"{emulator.title()} Window")
     window.geometry("1920x1080")
     window.config(padx=0, pady=0, background="Black")
+
     bg_game = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
     label_mega = Label(window, image=bg_game, background="Black")
     label_mega.place(x=0, y=0, relwidth=1, relheight=1)
@@ -123,6 +83,7 @@ def access_emulator(emulator, index):
     generate_up_button(index, emulator)
     generate_down_button(len(roms), index, emulator)
     move_focus_down()
+    joystick.update_root(window)
     window.mainloop()
 
 
@@ -175,8 +136,8 @@ def open_overlay(emulator, rom):
 def close_overlay():
     global overlay_img
     overlay_img.destroy()
-    move_focus_down()
-    move_focus_up()
+    window.focus_force()
+    joystick.update_root(window)
 
 
 def generate_roms(rom_games, index, final_index_roms, emulator):
@@ -201,6 +162,7 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
 
 
 def move_focus_down():
+    global window
     global current_index
     global DEFAULT_ULTRA_RETRO_PATH
     button = window.winfo_children()[current_index]
@@ -223,8 +185,7 @@ def move_focus_down():
         img = ""
 
     button.configure(bg="Red")
-    find_events()
-    return display_game_img(img)
+    display_game_img(img)
 
 
 def move_focus_up():
@@ -250,7 +211,7 @@ def move_focus_up():
         img = ""
 
     button.configure(bg="Red")
-    return display_game_img(img)
+    display_game_img(img)
 
 
 def display_game_img(image):
@@ -262,10 +223,11 @@ def display_game_img(image):
         for values in label_images.values():
             values.destroy()
         return
-    global window
+    # global window
     label_image = Label(image=image)
     label_image.place(x=700, y=150)
     label_images[image] = label_image
+    joystick.update_root(window)
     window.mainloop()
 
 
@@ -284,6 +246,7 @@ def back_to_menu():
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     create_emulators_list()
     generate_exit_button()
+    joystick.update_root(window)
     window.mainloop()
 
 
