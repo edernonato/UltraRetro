@@ -8,8 +8,8 @@ import pathlib
 
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
-ROMS_FOLDER = "/usr/games/roms"
-# ROMS_FOLDER = "G:/roms/UltraRetro"
+# ROMS_FOLDER = "/usr/games/roms"
+ROMS_FOLDER = "G:/roms/UltraRetro"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
@@ -45,8 +45,8 @@ def create_emulators_list():
 
 
 def update_application():
-    os.system("sudo git stash")
-    cmd = partial(os.system, "sudo git pull")
+
+    cmd = partial(os.system, "/home/eder/Desktop/gitpull.sh")
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
 
     update_button = Button(fg="Red", width=270, height=100, text="Update Application", highlightcolor="White", bg="Black", image=button_img, borderwidth=0,
