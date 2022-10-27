@@ -44,6 +44,7 @@ def create_emulators_list():
 
 
 def update_application():
+    os.system("sudo git stash")
     cmd = partial(os.system, "sudo git pull")
 
     update_button = Button(fg="white", width=30, height=5, text="Update Application", font=("Arial", 8, "italic"),
