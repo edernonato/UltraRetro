@@ -35,7 +35,7 @@ def window_type(janela, control):
     window = janela
     label_images = {}
     current_index = 1
-    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Nintendo.png")
+    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
 
 
 def create_emulators_list():
@@ -265,6 +265,7 @@ def back_to_menu():
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     create_emulators_list()
     generate_exit_button()
+    update_application()
     joystick.update_root(window)
     window.mainloop()
 
