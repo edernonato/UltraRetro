@@ -45,8 +45,7 @@ def create_emulators_list():
 
 
 def update_application():
-
-    cmd = partial(os.system, "/home/eder/Desktop/gitpull.sh")
+    cmd = partial(os.system, "echo LOGINPASSWD | sudo -S /home/eder/Desktop/gitpull.sh")
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
 
     update_button = Button(fg="Red", width=270, height=100, text="Update Application", highlightcolor="White", bg="Black", image=button_img, borderwidth=0,

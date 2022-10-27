@@ -27,6 +27,6 @@ def start():
     update_application()
     window.mainloop()
 
-start()
 
+start()
 
