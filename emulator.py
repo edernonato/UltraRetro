@@ -43,6 +43,15 @@ def create_emulators_list():
         create_emulators(emulator, EMULATOR_LIST.index(emulator))
 
 
+def update_application():
+    cmd = partial(os.system, "sudo git pull")
+
+    update_button = Button(fg="white", width=30, height=5, text="Update Application", font=("Arial", 8, "italic"),
+                           highlightcolor="White", highlightthickness=0, bg="Black",
+                           command=cmd)
+    update_button.grid(row=0, column=6, columnspan=2, padx=10, pady=10)
+
+
 def create_emulators(name, index):
     global current_index
     current_index = 0
