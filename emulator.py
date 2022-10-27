@@ -35,7 +35,7 @@ def window_type(janela, control):
     window = janela
     label_images = {}
     current_index = 1
-    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
+    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Nintendo.png")
 
 
 def create_emulators_list():
