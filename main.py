@@ -10,7 +10,7 @@ from controller import JoystickControllers
 matplotlib.use('Agg')
 BACKGROUND_COLOR = "Black"
 window = Tk()
-DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Playstation.png")
+DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
 bg = DEFAULT_BG
 label1 = Label(window, image=bg)
 label1.place(x=0, y=0, relwidth=1, relheight=1)
