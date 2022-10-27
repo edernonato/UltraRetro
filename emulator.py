@@ -8,7 +8,8 @@ import pathlib
 
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
-ROMS_FOLDER = "/usr/games/roms"
+# ROMS_FOLDER = "/usr/games/roms"
+ROMS_FOLDER = "G:/roms/UltraRetro"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
@@ -46,11 +47,12 @@ def create_emulators_list():
 def update_application():
     os.system("sudo git stash")
     cmd = partial(os.system, "sudo git pull")
+    button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
 
-    update_button = Button(fg="white", width=30, height=5, text="Update Application", font=("Arial", 8, "italic"),
-                           highlightcolor="White", highlightthickness=0, bg="Black",
+    update_button = Button(fg="Red", width=270, height=100, text="Update Application", highlightcolor="White", bg="Black", image=button_img, borderwidth=0,
                            command=cmd)
-    update_button.grid(row=0, column=6, columnspan=2, padx=10, pady=10)
+    update_button.grid(row=len(EMULATOR_LIST), column=0, columnspan=2, padx=10, pady=10)
+    window.mainloop()
 
 
 def create_emulators(name, index):
@@ -276,4 +278,4 @@ def generate_exit_button():
     exit_button = Button(fg="white", width=30, height=5, text="Exit", font=("Arial", 8, "italic"),
                          highlightcolor="White", highlightthickness=0, bg="Black",
                          command=window.destroy)
-    exit_button.grid(row=row, column=0, columnspan=2, pady=10)
+    exit_button.grid(row=row + 1, column=0, columnspan=2, pady=10)
