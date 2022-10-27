@@ -87,6 +87,10 @@ def access_emulator(emulator, index):
     label_mega.place(x=0, y=0, relwidth=1, relheight=1)
     final_index = index + 20
     generate_roms(roms, index, final_index, emulator)
+    user = os.popen('whoami').read()
+    new_Button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
+         highlightcolor="White", highlightthickness=0, bg="Black", )
+    new_Button.grid(row=0, column=5)
     joystick.update_emulator_index(len(roms), emulator, final_index)
     move_focus_down()
     joystick.update_root(window)
@@ -98,9 +102,10 @@ def access_emulator(emulator, index):
 #         up_button_clicked = partial(access_emulator, emulator, index - 22)
 #     else:
 #         up_button_clicked = None
-#     up_button = Button(fg="white", width=30, height=2, text="Move  Up", font=("Arial", 8, "italic"),
+#     up_button = Button(fg="white", width=30, height=5, text=os.system("whoami"), font=("Arial", 8, "italic"),
 #                        highlightcolor="White", highlightthickness=0, bg="Black", command=up_button_clicked)
-#     up_button.grid(row=1, column=4, columnspan=2)
+#     up_button.grid(row=1, column=3, columnspan=2)
+    # window.mainloop()
 #     joystick.update_emulator_index(None, emulator, final_index)
 
 
@@ -115,8 +120,8 @@ def access_emulator(emulator, index):
 #     down_button = Button(fg="white", width=30, height=2, text="Move Down", font=("Arial", 8, "italic"),
 #                          highlightcolor="White", highlightthickness=0, bg="Black",
 #                          command=down_button_clicked)
-#     down_button.grid(row=2, column=4, columnspan=2)
-#     joystick.update_emulator_index(len_roms, emulator, final_index)
+#     down_button.grid(row=2, column=6, columnspan=2)
+    # joystick.update_emulator_index(len_roms, emulator, final_index)
 
 
 def open_rom(emulator, rom):
