@@ -45,7 +45,7 @@ def create_emulators_list():
 
 
 def update_application():
-    cmd = partial(os.system, "echo LOGINPASSWD | sudo -S /home/eder/Desktop/gitpull.sh")
+    cmd = partial(os.system, f"echo LOGINPASSWD | sudo -S {DEFAULT_ULTRA_RETRO_PATH}/gitpull.sh")
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
 
     update_button = Button(fg="Red", width=270, height=100, text="Update Application", highlightcolor="White", bg="Black", image=button_img, borderwidth=0,
@@ -267,8 +267,8 @@ def back_to_menu():
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     create_emulators_list()
     generate_exit_button()
-    update_application()
     joystick.update_root(window)
+    update_application()
     window.mainloop()
 
 
