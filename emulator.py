@@ -8,8 +8,8 @@ import pathlib
 
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
-# ROMS_FOLDER = "/usr/games/roms"
-ROMS_FOLDER = "G:/roms/UltraRetro"
+ROMS_FOLDER = "/usr/games/roms"
+# ROMS_FOLDER = "G:/roms/UltraRetro"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 global window
