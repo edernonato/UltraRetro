@@ -5,6 +5,7 @@ from start_window import initial_screen
 from handle_keys import on_key_press
 from controller import JoystickControllers
 
+
 matplotlib.use('Agg')
 BACKGROUND_COLOR = "Black"
 window = Tk()
@@ -22,9 +23,8 @@ def start():
     window.bind('<KeyPress>', on_key_press)
     create_emulators_list()
     generate_exit_button()
-
     window.mainloop()
 
-
 start()
+
 

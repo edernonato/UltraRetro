@@ -4,9 +4,10 @@ from functools import partial
 from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
+import pathlib
 
 
-DEFAULT_ULTRA_RETRO_PATH = "/home/complex/Desktop/UltraRetro/UltraRetro"
+DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
 Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo"], "PCSXR": "Playstation"}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
@@ -14,15 +15,12 @@ global window
 global buttons
 global label_images
 global current_index
-global roms
-global current_rom
 global final_index
+global roms
 global overlay_img
 global DEFAULT_BG
-global xbox_controller
-global ps2_controller
-global controllers
 global joystick
+global emulator_clicked
 current_rom_focus = None
 current_focus = None
 
@@ -61,6 +59,8 @@ def access_emulator(emulator, index):
     global final_index
     global window
     global joystick
+    global emulator_clicked
+    emulator_clicked = emulator
     current_index = 0
     remove_widgets(window)
     path = f"{ROMS_FOLDER}/{emulator}/"
@@ -74,42 +74,38 @@ def access_emulator(emulator, index):
     bg_game = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
     label_mega = Label(window, image=bg_game, background="Black")
     label_mega.place(x=0, y=0, relwidth=1, relheight=1)
-    final_index = index + 22
+    final_index = index + 20
     generate_roms(roms, index, final_index, emulator)
-    back_button = Button(fg="white", width=30, height=2, text="Back", font=("Arial", 8, "italic"),
-                            highlightcolor="White", highlightthickness=0, bg="Black",
-                            command=back_to_menu)
-    back_button.grid(row=0, column=4, columnspan=2)
-    generate_up_button(index, emulator)
-    generate_down_button(len(roms), index, emulator)
+    joystick.update_emulator_index(len(roms), emulator, final_index)
     move_focus_down()
     joystick.update_root(window)
     window.mainloop()
 
 
-def generate_up_button(index, emulator):
-    if index <= 21:
-        up_button_clicked = None
-    else:
-        up_button_clicked = partial(access_emulator, emulator, index - 22)
+# def generate_up_button(len_roms, index, emulator):
+#     if len_roms > 21:
+#         up_button_clicked = partial(access_emulator, emulator, index - 22)
+#     else:
+#         up_button_clicked = None
+#     up_button = Button(fg="white", width=30, height=2, text="Move  Up", font=("Arial", 8, "italic"),
+#                        highlightcolor="White", highlightthickness=0, bg="Black", command=up_button_clicked)
+#     up_button.grid(row=1, column=4, columnspan=2)
+#     joystick.update_emulator_index(None, emulator, final_index)
 
-    up_button = Button(fg="white", width=30, height=2, text="Move  Up", font=("Arial", 8, "italic"),
-                       highlightcolor="White", highlightthickness=0, bg="Black", command=up_button_clicked)
-    up_button.grid(row=1, column=4, columnspan=2)
 
-
-def generate_down_button(len_roms, index, emulator):
-    global final_index
-    final_index = index + 22
-    if len_roms > 22:
-        down_button_clicked = partial(access_emulator, emulator, final_index)
-    else:
-        down_button_clicked = None
-
-    down_button = Button(fg="white", width=30, height=2, text="Move Down", font=("Arial", 8, "italic"),
-                         highlightcolor="White", highlightthickness=0, bg="Black",
-                         command=down_button_clicked)
-    down_button.grid(row=2, column=4, columnspan=2)
+# def generate_down_button(len_roms, index, emulator):
+#     global final_index
+#     final_index = index + 22
+#     if len_roms > 22:
+#         down_button_clicked = partial(access_emulator, emulator, final_index)
+#     else:
+#         down_button_clicked = None
+#
+#     down_button = Button(fg="white", width=30, height=2, text="Move Down", font=("Arial", 8, "italic"),
+#                          highlightcolor="White", highlightthickness=0, bg="Black",
+#                          command=down_button_clicked)
+#     down_button.grid(row=2, column=4, columnspan=2)
+#     joystick.update_emulator_index(len_roms, emulator, final_index)
 
 
 def open_rom(emulator, rom):
@@ -165,14 +161,20 @@ def move_focus_down():
     global window
     global current_index
     global DEFAULT_ULTRA_RETRO_PATH
+    global emulator_clicked
+    global final_index
     button = window.winfo_children()[current_index]
     button.configure(bg="Black")
     if current_index >= len(window.winfo_children()) - 1:
+        if window.title() != "UltraRetro" and len(roms) > 20:
+            access_emulator(emulator_clicked, final_index)
         current_index = 1
         button = window.winfo_children()[current_index]
     else:
         current_index += 1
         button = window.winfo_children()[current_index]
+    if isinstance(button, Label):
+        move_focus_down()
 
     # noinspection PyBroadException
     try:
@@ -195,11 +197,16 @@ def move_focus_up():
     button = window.winfo_children()[current_index]
     button.configure(bg="Black")
     if current_index <= 1:
-        current_index = len(window.winfo_children()) - 1
-        button = window.winfo_children()[current_index]
+        if window.title() != "UltraRetro" and len(roms) > 20:
+            print("LAST")
+            access_emulator(emulator_clicked, final_index - 40)
+            current_index = len(window.winfo_children())
+            print(current_index)
+        else:
+            current_index = len(window.winfo_children()) - 1
     else:
         current_index -= 1
-        button = window.winfo_children()[current_index]
+    button = window.winfo_children()[current_index]
     # noinspection PyBroadException
     try:
         button.focus_force()
@@ -216,6 +223,9 @@ def move_focus_up():
 
 def display_game_img(image):
     global label_images
+    global window
+    global emulator_clicked
+    global final_index
     for values in label_images.values():
         values.destroy()
 
@@ -223,7 +233,7 @@ def display_game_img(image):
         for values in label_images.values():
             values.destroy()
         return
-    # global window
+
     label_image = Label(image=image)
     label_image.place(x=700, y=150)
     label_images[image] = label_image

@@ -1,5 +1,5 @@
 import pygame
-from emulator import move_focus_down, move_focus_up, back_to_menu
+from emulator import move_focus_down, move_focus_up, back_to_menu, access_emulator
 
 
 class JoystickControllers:
@@ -7,12 +7,22 @@ class JoystickControllers:
         self.window = root
         self.controllers = []
         self.update_root(self.window)
+        self.up = None
+        self.down = None
+        self.emulator = None
+        self.index = None
+        self.len_roms = None
 
     def update_root(self, root):
         self.window = root
         self.controllers = []
         self.get_controllers()
         self.find_events()
+
+    def update_emulator_index(self, len_roms, emulator, index):
+        self.emulator = emulator
+        self.index = index
+        self.len_roms = len_roms
 
     def get_controllers(self):
         pygame.init()
@@ -41,7 +51,9 @@ class JoystickControllers:
             try:
                 if self.window.focus_get():
                     for event in events:
+
                         if event.type == pygame.JOYBUTTONDOWN:
+
                             if joy_a == 1:
                                 self.window.focus_get().invoke()
                             if joy_b == 1:
@@ -52,13 +64,20 @@ class JoystickControllers:
                                 self.window.event_generate('<<RT>>')
 
                         if event.type == pygame.JOYHATMOTION:
+                            # print(event)
                             hats = joystick.get_numhats()
                             for i in range(hats):
                                 hat = joystick.get_hat(i)
                                 if hat == (0, -1):
                                     move_focus_down()
-                                elif hat == (0, 1):
+                                if hat == (0, 1):
                                     move_focus_up()
+                                if hat == (-1, 0):
+                                    if self.len_roms > 21:
+                                        access_emulator(self.emulator, self.index - 40)
+                                if hat == (1, 0):
+                                    if self.len_roms > 21:
+                                        access_emulator(self.emulator, self.index)
             except Exception:
                 pass
         self.window.after(1, self.find_events)
