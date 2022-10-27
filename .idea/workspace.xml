@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7779526-d00d-4a3e-8944-0061a5bfcca6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Images/Button.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Games/Super Nintendo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Super Nintendo1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Super Nintendo2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Super Nintendo3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/Super Nintendo4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/d20b25e780e4ad5846ef70837c006c60.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/super-nintendo-background-hd-1440x900-246772.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/update_button - Copy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Images/update_button.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/Super Nintendo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Super Nintendo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/emulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
