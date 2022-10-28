@@ -72,12 +72,13 @@ class JoystickControllers:
                                     move_focus_down()
                                 if hat == (0, 1):
                                     move_focus_up()
-                                if hat == (-1, 0):
-                                    if self.len_roms > 21:
-                                        access_emulator(self.emulator, self.index - 40)
-                                if hat == (1, 0):
-                                    if self.len_roms > 21:
-                                        access_emulator(self.emulator, self.index)
+                                if self.window.title() != "UltraRetro":
+                                    if hat == (-1, 0):
+                                        if self.len_roms > 21:
+                                            access_emulator(self.emulator, self.index - 40)
+                                    if hat == (1, 0):
+                                        if self.len_roms > 21:
+                                            access_emulator(self.emulator, self.index)
             except Exception:
                 pass
         self.window.after(1, self.find_events)
