@@ -5,6 +5,8 @@ from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
 import pathlib
+from tkvideo import tkvideo
+import random
 
 
 global window
@@ -17,6 +19,9 @@ global overlay_img
 global DEFAULT_BG
 global joystick
 global emulator_clicked
+global text_label
+global video_label
+global emulator_current_focus
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
@@ -40,11 +45,6 @@ def window_type(janela, control):
     DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
 
 
-def create_emulators_list():
-    for emulator in EMULATOR_LIST:
-        create_emulators(emulator, EMULATOR_LIST.index(emulator))
-
-
 def update_application():
     cmd = partial(os.system, f"echo LOGINPASSWD | sudo -S {DEFAULT_ULTRA_RETRO_PATH}/gitpull.sh")
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
@@ -52,6 +52,11 @@ def update_application():
                            bg="Black", image=button_img, borderwidth=0, command=cmd, compound=LEFT)
     update_button.grid(row=0, column=3, columnspan=2, padx=10, pady=10)
     window.mainloop()
+
+
+def create_emulators_list():
+    for emulator in EMULATOR_LIST:
+        create_emulators(emulator, EMULATOR_LIST.index(emulator))
 
 
 def create_emulators(name, index):
@@ -64,6 +69,65 @@ def create_emulators(name, index):
                              highlightcolor="White", highlightthickness=0, bg="Black", command=access)
     emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
     move_focus_down()
+
+
+def generate_video_label():
+    global video_label
+    global window
+    global ROMS_FOLDER
+    global emulator_current_focus
+    # noinspection PyBroadException
+    try:
+        remove_video_label()
+    except Exception:
+        pass
+    # noinspection PyBroadException
+    try:
+        video_label = Label()
+        video_label.place(x=600, y=200)
+        games = os.listdir(f"{ROMS_FOLDER}/{emulator_current_focus}/videos")
+        game_index = random.randint(0, len(games) - 1)
+        player = tkvideo(f"{ROMS_FOLDER}/{emulator_current_focus}/videos/{games[game_index]}", video_label, loop=1,
+                         size=(800, 600))
+        player.play()
+        window.after(3000, generate_video_label)
+    except Exception:
+        pass
+
+
+def remove_video_label():
+    global video_label
+    video_label.destroy()
+
+
+def generate_text_label(emulator_focus):
+    global text_label
+    global video_label
+    global ROMS_FOLDER
+    global emulator_current_focus
+    emulator_current_focus = emulator_focus
+    if window.title() == "UltraRetro":
+        games = os.listdir(f"{ROMS_FOLDER}/{emulator_focus}")
+        text_label = Label(text=f"{emulator_focus}: {len(games)} Games", fg="white", width=100, height=5,
+                           font=("Arial", 12, "italic"), highlightcolor="Black", highlightthickness=5, bg="Brown",
+                           highlightbackground="Purple")
+        text_label.place(x=550, y=900)
+    generate_video_label()
+
+
+def remove_text_label():
+    global text_label
+    global video_label
+    # noinspection PyBroadException
+    try:
+        text_label.destroy()
+    except Exception:
+        pass
+    # noinspection PyBroadException
+    try:
+        remove_video_label()
+    except Exception:
+        pass
 
 
 def access_emulator(emulator, index):
@@ -93,40 +157,13 @@ def access_emulator(emulator, index):
     # Button created for testing
     user = os.popen('whoami').read()
     new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
-                        highlightcolor="White", highlightthickness=0, bg="Black", )
+                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0)
     new_button.grid(row=0, column=5)
 
     joystick.update_emulator_index(len(roms), emulator, final_index)
     move_focus_down()
     joystick.update_root(window)
     window.mainloop()
-
-
-# def generate_up_button(len_roms, index, emulator):
-#     if len_roms > 21:
-#         up_button_clicked = partial(access_emulator, emulator, index - 22)
-#     else:
-#         up_button_clicked = None
-#     up_button = Button(fg="white", width=30, height=5, text=os.system("whoami"), font=("Arial", 8, "italic"),
-#                        highlightcolor="White", highlightthickness=0, bg="Black", command=up_button_clicked)
-#     up_button.grid(row=1, column=3, columnspan=2)
-    # window.mainloop()
-#     joystick.update_emulator_index(None, emulator, final_index)
-
-
-# def generate_down_button(len_roms, index, emulator):
-#     global final_index
-#     final_index = index + 22
-#     if len_roms > 22:
-#         down_button_clicked = partial(access_emulator, emulator, final_index)
-#     else:
-#         down_button_clicked = None
-#
-#     down_button = Button(fg="white", width=30, height=2, text="Move Down", font=("Arial", 8, "italic"),
-#                          highlightcolor="White", highlightthickness=0, bg="Black",
-#                          command=down_button_clicked)
-#     down_button.grid(row=2, column=6, columnspan=2)
-    # joystick.update_emulator_index(len_roms, emulator, final_index)
 
 
 def open_rom(emulator, rom):
@@ -181,9 +218,9 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
 def move_focus_down():
     global window
     global current_index
-    global DEFAULT_ULTRA_RETRO_PATH
     global emulator_clicked
     global final_index
+    remove_text_label()
     button = window.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
     if current_index >= len(window.winfo_children()) - 1:
@@ -200,19 +237,20 @@ def move_focus_down():
     try:
         button.focus_force()
         button_text = button.cget('text')
-        button_text = button_text.replace(".zip", ".png")
-        image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{button_text}")
+        button_text_formatted = format_image_file_name(button_text)
+        image1 = Image.open(f"{button_text_formatted}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
         img = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
+    generate_text_label(button.cget('text'))
     display_game_img(img)
 
 
 def move_focus_up():
     global current_index
-    global DEFAULT_ULTRA_RETRO_PATH
     global emulator_clicked
+    remove_text_label()
     display_game_img("")
     button = window.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
@@ -229,13 +267,26 @@ def move_focus_up():
     try:
         button.focus_force()
         button_text = button.cget('text')
-        button_text = button_text.replace(".zip", ".png")
-        image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{button_text}")
+        button_text_formatted = format_image_file_name(button_text)
+        image1 = Image.open(f"{button_text_formatted}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
+        pass
         img = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
+    generate_text_label(button.cget('text'))
     display_game_img(img)
+
+
+def format_image_file_name(image_text):
+    global ROMS_FOLDER
+    global emulator_clicked
+    image_name_formatted = f"{ROMS_FOLDER}/{emulator_clicked}/images/"
+    button_text_list = image_text.split(".")
+    for word in range(len(button_text_list) - 1):
+        if word != button_text_list[len(button_text_list) - 1]:
+            image_name_formatted += button_text_list[word] + "."
+    return image_name_formatted + "png"
 
 
 def display_game_img(image):
@@ -266,6 +317,7 @@ def remove_widgets(janela):
 def back_to_menu():
     global DEFAULT_BG
     global current_index
+    global emulator_current_focus
     current_index = 0
     remove_widgets(window)
     initial_screen(window)
@@ -273,6 +325,7 @@ def back_to_menu():
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     create_emulators_list()
     generate_exit_button()
+    generate_text_label(emulator_current_focus)
     joystick.update_root(window)
     update_application()
     window.mainloop()
