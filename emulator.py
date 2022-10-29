@@ -107,11 +107,15 @@ def generate_text_label(emulator_focus):
     global emulator_current_focus
     emulator_current_focus = emulator_focus
     if window.title() == "UltraRetro":
-        games = os.listdir(f"{ROMS_FOLDER}/{emulator_focus}")
-        text_label = Label(text=f"{emulator_focus}: {len(games)} Games", fg="white", width=100, height=5,
-                           font=("Arial", 12, "italic"), highlightcolor="Black", highlightthickness=5, bg="Brown",
-                           highlightbackground="Purple")
-        text_label.place(x=550, y=900)
+        # noinspection PyBroadException
+        try:
+            games = os.listdir(f"{ROMS_FOLDER}/{emulator_focus}")
+            text_label = Label(text=f"{emulator_focus}: {len(games)} Games", fg="white", width=100, height=5,
+                               font=("Arial", 12, "italic"), highlightcolor="Black", highlightthickness=5, bg="Brown",
+                               highlightbackground="Purple")
+            text_label.place(x=550, y=900)
+        except Exception:
+            pass
     generate_video_label()
 
 
