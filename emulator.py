@@ -26,7 +26,9 @@ global emulator_current_focus
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
 # ROMS_FOLDER = "G:/roms/UltraRetro"
-Applications = {"Mednafen": ["Mega Drive", "Super Nintendo", "Nintendo", "Game Boy Advance"], "PCSXR": "Playstation"}
+Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo"], "PCSXR": "Playstation",
+                "Snes9x EX": "Super Nintendo"}
+
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 current_rom_focus = None
 current_focus = None
@@ -171,10 +173,13 @@ def access_emulator(emulator, index):
 
 
 def open_rom(emulator, rom):
+    global DEFAULT_ULTRA_RETRO_PATH
     if emulator in Applications["Mednafen"]:
         os.system(f"/usr/games/mednafen '{ROMS_FOLDER}/{emulator}/{rom}'")
     elif emulator in Applications['PCSXR']:
         os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
+    # elif emulator in Applications['Snes9x EX']:
+    #     os.system(f'"{DEFAULT_ULTRA_RETRO_PATH}/Snes9x EX+/s9xp" "{ROMS_FOLDER}/{emulator}/{rom}"')
     close_overlay()
 
 
@@ -329,7 +334,6 @@ def back_to_menu():
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     create_emulators_list()
     generate_exit_button()
-    generate_text_label(emulator_current_focus)
     joystick.update_root(window)
     update_application()
     window.mainloop()

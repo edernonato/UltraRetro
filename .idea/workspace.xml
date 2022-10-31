@@ -2,10 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7779526-d00d-4a3e-8944-0061a5bfcca6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/accept.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/fastForward.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/game.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/menu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/navArrow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/overlays128.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/s9xp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Snes9x EX+/x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mednafen_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Images/Game Boy Advance.png" beforeDir="false" afterPath="$PROJECT_DIR$/Images/Game Boy Advance.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/emulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/start_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
