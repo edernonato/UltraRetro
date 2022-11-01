@@ -34,6 +34,14 @@ current_rom_focus = None
 current_focus = None
 
 
+def controller_config(controller_number):
+    global joystick
+    global window
+    # for key in joystick.button_list:
+    joystick.assign_buttons(joystick.button_list, controller_number)
+    back_to_menu()
+
+
 def window_type(janela, control):
     global window
     global DEFAULT_BG
@@ -78,6 +86,7 @@ def generate_video_label():
     global window
     global ROMS_FOLDER
     global emulator_current_focus
+    return
     # noinspection PyBroadException
     try:
         remove_video_label()
@@ -161,10 +170,18 @@ def access_emulator(emulator, index):
     generate_roms(roms, index, final_index, emulator)
 
     # Button created for testing
+    cmd = partial(controller_config, 1)
     user = os.popen('whoami').read()
     new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
-                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0)
+                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
+                        command=cmd)
     new_button.grid(row=0, column=5)
+    cmd = partial(controller_config, 2)
+    user = os.popen('whoami').read()
+    new_button2 = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
+                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
+                        command=cmd)
+    new_button2.grid(row=1, column=5)
 
     joystick.update_emulator_index(len(roms), emulator, final_index)
     move_focus_down()
