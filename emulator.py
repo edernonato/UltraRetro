@@ -7,7 +7,7 @@ from threading import Thread
 import pathlib
 from tkvideo import tkvideo
 import random
-
+import time
 
 global window
 global buttons
@@ -38,6 +38,7 @@ def controller_config(controller_number):
     global joystick
     global window
     # for key in joystick.button_list:
+    time.sleep(2)
     joystick.assign_buttons(joystick.button_list, controller_number)
     back_to_menu()
 
@@ -86,7 +87,7 @@ def generate_video_label():
     global window
     global ROMS_FOLDER
     global emulator_current_focus
-    return
+    # return
     # noinspection PyBroadException
     try:
         remove_video_label()
@@ -161,6 +162,7 @@ def access_emulator(emulator, index):
 
     window.title(f"{emulator.title()} Window")
     window.geometry("1920x1080")
+    # window.geometry("1024x768")
     window.config(padx=0, pady=0, background="Black")
 
     bg_game = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
