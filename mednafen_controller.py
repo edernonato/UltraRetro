@@ -1,6 +1,8 @@
 from emulator import DEFAULT_ULTRA_RETRO_PATH
 import json
+import os
 global controller_mednafen_guid
+
 with open("/proc/bus/input/devices", "r") as f:
     devices_file = f.read()  # read everything in the file
     f.seek(0)  # rewind
@@ -46,17 +48,22 @@ def mednafen_controller_config(device_dict, device_name):
                             if button == 'a':
                                 joy_a = i[button]
                                 buttons_mednafen["a"] = f"button_{joy_a}"
+                                buttons_mednafen["rapid_a"] = f"button_{joy_a}"
                             if button == 'b':
                                 joy_b = i[button]
                                 buttons_mednafen["b"] = f"button_{joy_b}"
+                                buttons_mednafen["rapid_b"] = f"button_{joy_b}"
                             if button == 'x':
                                 joy_x = i[button]
                                 buttons_mednafen["x"] = f"button_{joy_x}"
+                                buttons_mednafen["rapid_x"] = f"button_{joy_x}"
                                 joy_c = i[button]
                                 buttons_mednafen["c"] = f"button_{joy_c}"
+                                buttons_mednafen["rapid_c"] = f"button_{joy_c}"
                             if button == 'y':
                                 joy_y = i[button]
                                 buttons_mednafen["y"] = f"button_{joy_y}"
+                                buttons_mednafen["rapid_y"] = f"button_{joy_y}"
                             if button == 'l':
                                 joy_lb = i[button]
                                 buttons_mednafen["l"] = f"button_{joy_lb}"
@@ -81,8 +88,7 @@ def mednafen_controller_config(device_dict, device_name):
                             buttons_mednafen["right"] = "abs_5+"
                 print(buttons_mednafen)
 
-                # with open("/home/complex/.mednafen/mednafen.cfg", "r+") as f:
-                with open("/home/oem/.mednafen/mednafen.cfg", "r+") as f:
+                with open("/root/.mednafen/mednafen.cfg", "r+") as f:
                     old = f.read()
                 emulator_list = ["md", "snes", "psx", "gba", "nes", "sms"]
                 # button_list = ["a", "b", "c", "down", "left", "right", "up", "start", "l", "r", "x", "y", "select"]
@@ -93,11 +99,9 @@ def mednafen_controller_config(device_dict, device_name):
                         for button in buttons_mednafen:
                             for emulator in emulator_list:
                                 if words[word] == f"{emulator}.input.port1.gamepad.{button}":
-                                    with open("/home/oem/.mednafen/mednafen.cfg", "r+") as f:
+                                    with open("/root/.mednafen/mednafen.cfg", "r+") as f:
                                         old_file = f.read()  # read everything in the file
                                         new_button = f"{emulator}.input.port1.gamepad.{button} joystick {device} {buttons_mednafen[button]}"
-                                        # print(line)
-                                        # print(new_button)
                                         f.seek(0)  # rewind
                                         new_mednafen_file = old_file.replace(line, new_button)
                                         f.write(new_mednafen_file)
