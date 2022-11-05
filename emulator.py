@@ -207,7 +207,7 @@ def open_overlay(emulator, rom):
     global overlay_img
     global DEFAULT_ULTRA_RETRO_PATH
     global window         
-    image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/overlay/7th Saga, The (USA).png")
+    image1 = Image.open(f"{DEFAULT_ULTRA_RETRO_PATH}/Images/Games/overlay/{emulator}.png")
     img = ImageTk.PhotoImage(image1)
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
