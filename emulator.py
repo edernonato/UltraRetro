@@ -7,7 +7,7 @@ from threading import Thread
 import pathlib
 from tkvideo import tkvideo
 import random
-import time
+
 
 global window
 global buttons
@@ -37,9 +37,7 @@ current_focus = None
 def controller_config(controller_number):
     global joystick
     global window
-    # for key in joystick.button_list:
-    time.sleep(2)
-    joystick.assign_buttons(joystick.button_list, controller_number)
+    joystick.assign_buttons(joystick.button_list_to_assign, controller_number)
     back_to_menu()
 
 
@@ -181,8 +179,8 @@ def access_emulator(emulator, index):
     cmd = partial(controller_config, 2)
     user = os.popen('whoami').read()
     new_button2 = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
-                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
-                        command=cmd)
+                         highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
+                         command=cmd)
     new_button2.grid(row=1, column=5)
 
     joystick.update_emulator_index(len(roms), emulator, final_index)
