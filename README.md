@@ -6,7 +6,7 @@ Retro Game System
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=Developing&color=GREEN&style=for-the-badge)
 
-![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=github.com/edernonato/UltraRetro)
+![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=UltraRetro)
 
 <h4 align="center">     :construction:  Project in its initial state.  :construction:</h4>
 
