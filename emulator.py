@@ -26,9 +26,9 @@ global emulator_current_focus
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
 # ROMS_FOLDER = "G:/roms/UltraRetro"
-Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo"], "PCSXR": "Playstation",
+Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo", "Playstation"], "PCSXR": "Playstation",
                 "Snes9x EX": "Super Nintendo"}
-mednafen_emulators_name = {"Mega Drive": ["md", ".yscale 4.85", ".xscale 5.05"], "Nintendo": ["nes", ".yscale 4.85", ".xscale 5.75"], "Game Boy Advance": ["gba", ".yscale 6.75", ".xscale 6.15"], "Super Nintendo": ["snes", ".yscale 4.85", ".xscale 5.75"]}
+mednafen_emulators_name = {"Playstation": ["psx", ".yscale 4.6", ".xscale 4.65"], "Mega Drive": ["md", ".yscale 4.85", ".xscale 5.09"], "Nintendo": ["nes", ".yscale 4.85", ".xscale 5.75"], "Game Boy Advance": ["gba", ".yscale 6.75", ".xscale 6.75"], "Super Nintendo": ["snes", ".yscale 4.85", ".xscale 5.79"]}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 current_rom_focus = None
 current_focus = None
@@ -196,8 +196,8 @@ def open_rom(emulator, rom):
         xscale = mednafen_emulators_name[emulator][2]
         mednafen_emulator = mednafen_emulators_name[emulator][0]
         os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} -{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
-    elif emulator in Applications['PCSXR']:
-        os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
+    # elif emulator in Applications['PCSXR']:
+    #     os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
     # elif emulator in Applications['Snes9x EX']:
     #     os.system(f'"{DEFAULT_ULTRA_RETRO_PATH}/Snes9x EX+/s9xp" "{ROMS_FOLDER}/{emulator}/{rom}"')
     close_overlay()
