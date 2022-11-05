@@ -1,3 +1,3 @@
-cd /home/eder/Desktop/UltraRetro/UltraRetro
+cd /usr/games/UltraRetro
 sudo git stash
 sudo git pull
