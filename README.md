@@ -6,9 +6,8 @@ Retro Game System
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=Developing&color=GREEN&style=for-the-badge)
 
-![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=UltraRetro)
 
 <h4 align="center">     :construction:  Project in its initial state.  :construction:</h4>
 
 
-Ultra Retro is a multi emulator system, able to unify all the main console emulators in a single place.
+<h4 align="center">     Ultra Retro is a multi emulator system, able to unify all the main console emulators in a single place.</h4>
