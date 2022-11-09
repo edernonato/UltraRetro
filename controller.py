@@ -15,6 +15,9 @@ class JoystickControllers:
         self.data_read = False
         self.joy_axis_x = None
         self.joy_axis_y = None
+        self.joy_exit = None
+        self.joy_select = None
+        self.joy_start = None
         self.joy_a = None
         self.joy_b = None
         self.joy_x = None
@@ -164,6 +167,11 @@ class JoystickControllers:
                         self.joy_lt = self.controller1.get_button(controller_data[button])
                     if button == 'rt':
                         self.joy_rt = self.controller1.get_button(controller_data[button])
+                    if button == 'start':
+                        self.joy_start = self.controller1.get_button(controller_data[button])
+                    if button == 'select':
+                        self.joy_select = self.controller1.get_button(controller_data[button])
+
         except Exception:
             pass
 
@@ -190,7 +198,9 @@ class JoystickControllers:
                                     self.window.event_generate('<<LT>>')
                                 if self.joy_rt == 1:
                                     self.window.event_generate('<<RT>>')
-                                    # print(self.assigned_keys)
+                                if self.joy_start == 1 and self.joy_select == 1:
+                                    self.window.destroy()
+
                             # Adding Controller Event
                             if event.type == 1541:
                                 self.controllers = []

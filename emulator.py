@@ -24,19 +24,29 @@ global text_label
 global video_label
 global emulator_current_focus
 global buttons_frame
+global emulators_list_index
+global exit_button
+
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
 # ROMS_FOLDER = "G:/roms/UltraRetro"
-Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo", "Playstation", "Master System"], "PCSXR": "Playstation",
+Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo", "Playstation",
+                             "Master System", "Atari Lynx", "Sega Game Gear", "WonderSwan", "Sega Saturn"],
+                "PCSXR": "Playstation",
                 "Snes9x EX": "Super Nintendo"}
 mednafen_emulators_name = {"Playstation": ["psx", ".yscale 4.6", ".xscale 4.65"],
                            "Mega Drive": ["md", ".yscale 4.85", ".xscale 5.09"],
                            "Nintendo": ["nes", ".yscale 4.85", ".xscale 5.75"],
                            "Game Boy Advance": ["gba", ".yscale 6.75", ".xscale 6.75"],
                            "Super Nintendo": ["snes", ".yscale 4.85", ".xscale 5.79"],
-                           "Master System": ["ss", ".yscale 10.75", ".xscale 10.75"]}
+                           "Master System": ["ss", ".yscale 10.75", ".xscale 10.75"],
+                           "Atari Lynx": ["lynx", ".yscale 9.9", ".xscale 10.0"],
+                           "Sega Game Gear": ["gg", ".yscale 7.3", ".xscale 9.0"],
+                           "WonderSwan": ["wswan", ".yscale 7.3", ".xscale 9.0"],
+                           "Sega Saturn": ["ss", ".yscale 7.3", ".xscale 9.0"]}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
+EMULATOR_LIST.sort()
 current_rom_focus = None
 current_focus = None
 
@@ -57,10 +67,25 @@ def window_type(janela, control):
     global buttons_frame
     joystick = control
     window = janela
-    buttons_frame = Frame(window)
+    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
+    buttons_frame_start()
     label_images = {}
     current_index = 1
-    DEFAULT_BG = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/bg_img.png")
+
+
+def buttons_frame_start():
+    global buttons_frame
+    global DEFAULT_BG
+    # noinspection PyBroadException
+    try:
+        remove_widgets(buttons_frame)
+        # buttons_frame.destroy()
+    except Exception:
+        pass
+    buttons_frame = Frame(window)
+    bg = DEFAULT_BG
+    frame_label_image = Label(buttons_frame, image=bg)
+    frame_label_image.place(x=0, y=0, relwidth=1, relheight=1)
 
 
 def update_application():
@@ -68,13 +93,37 @@ def update_application():
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
     update_button = Button(fg="Red", width=270, height=100, text="Update", highlightcolor="White",
                            bg="Black", image=button_img, borderwidth=0, command=cmd, compound=LEFT)
-    update_button.grid(row=0, column=3, columnspan=2, padx=10, pady=10)
+    # update_button.grid(row=0, column=4, columnspan=2, padx=10, pady=10)
+    update_button.place(x=1600, y=20)
     window.mainloop()
 
 
-def create_emulators_list():
-    for emulator in EMULATOR_LIST:
-        create_emulators(emulator, EMULATOR_LIST.index(emulator))
+def create_emulators_list(index):
+    global emulators_list_index
+    global buttons_frame
+    print(EMULATOR_LIST)
+    print(len(EMULATOR_LIST) - 1)
+    max_index = len(EMULATOR_LIST) - 1
+    buttons_frame_start()
+    if index < -8:
+        index = index + 11
+
+    emulators_list_index = index + 8
+    counter = 0
+    for emulator in range(index, emulators_list_index):
+        if counter >= 8:
+            print("COUNTER > 7")
+        else:
+            if emulator <= max_index:
+                create_emulators(EMULATOR_LIST[emulator], counter)
+            else:
+                emulators_list_index = (emulator - 1) - max_index
+                create_emulators(EMULATOR_LIST[emulators_list_index], counter)
+                emulators_list_index = emulator - max_index
+                # generate_exit_button()
+        counter += 1
+        # for emulator in EMULATOR_LIST:
+        #     create_emulators(emulator, EMULATOR_LIST.index(emulator))
 
 
 def create_emulators(name, index):
@@ -89,7 +138,7 @@ def create_emulators(name, index):
     buttons_frame.grid(row=0, column=0)
     emulator_button = Button(buttons_frame)
     emulator_button.configure(fg="white", width=30, height=5, text=name, font=("Arial", 12, "italic"),
-                             highlightcolor="White", highlightthickness=0, bg="Black", command=access)
+                              highlightcolor="White", highlightthickness=0, bg="Black", command=access)
     emulator_button.grid(row=index, column=0, columnspan=2, pady=10)
     emulator_current_focus = emulator_button
     move_focus_down()
@@ -126,11 +175,11 @@ def generate_video_label():
 def remove_video_label():
     global video_label
     global video_frame
+    # noinspection PyBroadException
     try:
         # video_frame.place_forget()
         # video_label.grid_forget()
         video_frame.destroy()
-        print("VIDEO FORGET")
     except Exception:
         pass
 
@@ -172,6 +221,7 @@ def access_emulator(emulator, index):
     global window
     global joystick
     global emulator_clicked
+    global buttons_frame
     emulator_clicked = emulator
     current_index = -1
     remove_widgets(buttons_frame)
@@ -185,9 +235,16 @@ def access_emulator(emulator, index):
     window.config(padx=0, pady=0, background="Black")
 
     bg_game = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
-    label_mega = Label(window, image=bg_game, background="Black")
-    label_mega.place(x=0, y=0, relwidth=1, relheight=1)
+    label_emulator_image = Label(window, image=bg_game, background="Black")
+    label_emulator_image.place(x=0, y=0, relwidth=1, relheight=1)
     final_index = index + 20
+
+    buttons_frame = Frame(window)
+    buttons_frame.grid(row=0, column=0)
+    bg_game_buttons_frame = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
+    label_buttons = Label(buttons_frame, image=bg_game_buttons_frame, background="Black")
+    label_buttons.place(x=0, y=0, relwidth=1, relheight=1)
+
     generate_roms(roms, index, final_index, emulator)
 
     # Button created for testing
@@ -196,7 +253,7 @@ def access_emulator(emulator, index):
     new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
                         highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
                         command=cmd)
-    new_button.grid(row=0, column=5)
+    new_button.grid(row=0, column=1)
     cmd = partial(controller_config, 2)
     user = os.popen('whoami').read()
     new_button2 = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
@@ -213,11 +270,14 @@ def access_emulator(emulator, index):
 
 def open_rom(emulator, rom):
     global DEFAULT_ULTRA_RETRO_PATH
+    print(emulator)
     if emulator in Applications["Mednafen"]:
+        print(emulator)
         yscale = mednafen_emulators_name[emulator][1]
         xscale = mednafen_emulators_name[emulator][2]
         mednafen_emulator = mednafen_emulators_name[emulator][0]
-        os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} -{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
+        os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} "
+                  f"-{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
     # elif emulator in Applications['PCSXR']:
     #     os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
     # elif emulator in Applications['Snes9x EX']:
@@ -250,20 +310,20 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
     global current_rom_focus
     global final_index
     global buttons_frame
+    global DEFAULT_ULTRA_RETRO_PATH
+    global buttons_frame
     final_index = final_index_roms
     if final_index > len(rom_games):
         final_index = len(rom_games)
     buttons = {}
-    buttons_frame = Frame(window)
-    buttons_frame.grid(row=0, column=0)
     for i in range(index, final_index):
         if i <= len(rom_games):
             chosen_rom = partial(open_overlay, emulator, rom_games[i])
             buttons[rom_games[i]] = Button(buttons_frame)
             buttons[rom_games[i]].configure(fg="white", width=50, height=2, text=rom_games[i],
-                                           font=("Arial", 10, "italic"), highlightcolor="White",
-                                           highlightthickness=0, bg="Black", command=chosen_rom,
-                                           activeforeground="Red", cursor="man", takefocus=1)
+                                            font=("Arial", 10, "italic"), highlightcolor="White",
+                                            highlightthickness=0, bg="Black", command=chosen_rom,
+                                            activeforeground="Red", cursor="man", takefocus=1)
             buttons[rom_games[i]].grid(row=i - index, column=0, columnspan=3, padx=10, pady=5)
 
     buttons[rom_games[index]].focus()
@@ -275,19 +335,24 @@ def move_focus_down():
     global current_index
     global emulator_clicked
     global final_index
+    global emulators_list_index
     remove_text_label()
     button = buttons_frame.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
-    if current_index >= len(buttons_frame.winfo_children()) -1:
+    if current_index >= len(buttons_frame.winfo_children()) - 1:
         if window.title() != "UltraRetro" and len(roms) > 20:
             access_emulator(emulator_clicked, final_index)
+        elif window.title() == "UltraRetro":
+            create_emulators_list(emulators_list_index)
         current_index = 0
         button = buttons_frame.winfo_children()[current_index]
+
     else:
         current_index += 1
         button = buttons_frame.winfo_children()[current_index]
-    # if isinstance(button, Label):
-    #     move_focus_down()
+    if isinstance(button, Label):
+        move_focus_down()
+        return
     # noinspection PyBroadException
     try:
         button.focus_force()
@@ -299,49 +364,14 @@ def move_focus_down():
         img = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
-    # if window.title() != "UltraRetro":
     display_game_img(img)
 
-
-
-
-
-
-    # global window
-    # global current_index
-    # global emulator_clicked
-    # global final_index
-    # remove_text_label()
-    # button = window.winfo_children()[current_index]
-    # button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
-    # if current_index >= len(window.winfo_children()) - 1:
-    #     if window.title() != "UltraRetro" and len(roms) > 20:
-    #         access_emulator(emulator_clicked, final_index)
-    #     current_index = 1
-    #     button = window.winfo_children()[current_index]
-    # else:
-    #     current_index += 1
-    #     button = window.winfo_children()[current_index]
-    # if isinstance(button, Label):
-    #     move_focus_down()
-    # # noinspection PyBroadException
-    # try:
-    #     button.focus_force()
-    #     button_text = button.cget('text')
-    #     button_text_formatted = format_image_file_name(button_text)
-    #     image1 = Image.open(f"{button_text_formatted}")
-    #     img = ImageTk.PhotoImage(image1)
-    # except Exception:
-    #     img = ""
-    # button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
-    # generate_text_label(button.cget('text'))
-    # # if window.title() != "UltraRetro":
-    # display_game_img(img)
 
 def move_focus_up():
     global buttons_frame
     global current_index
     global emulator_clicked
+    global emulators_list_index
     remove_text_label()
     display_game_img("")
     button = buttons_frame.winfo_children()[current_index]
@@ -350,11 +380,16 @@ def move_focus_up():
         if window.title() != "UltraRetro" and len(roms) > 20:
             access_emulator(emulator_clicked, final_index - 40)
             current_index = len(buttons_frame.winfo_children())
+        elif window.title() == "UltraRetro":
+            create_emulators_list(emulators_list_index - 16)
         else:
             current_index = len(buttons_frame.winfo_children()) - 1
     else:
         current_index -= 1
     button = buttons_frame.winfo_children()[current_index]
+    if isinstance(button, Label):
+        move_focus_up()
+        return
     # noinspection PyBroadException
     try:
         button.focus_force()
@@ -367,38 +402,7 @@ def move_focus_up():
         img = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
-    # if window.title() != "UltraRetro":
     display_game_img(img)
-
-    # global current_index
-    # global emulator_clicked
-    # remove_text_label()
-    # display_game_img("")
-    # button = window.winfo_children()[current_index]
-    # button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
-    # if current_index <= 1:
-    #     if window.title() != "UltraRetro" and len(roms) > 20:
-    #         access_emulator(emulator_clicked, final_index - 40)
-    #         current_index = len(window.winfo_children())
-    #     else:
-    #         current_index = len(window.winfo_children()) - 1
-    # else:
-    #     current_index -= 1
-    # button = window.winfo_children()[current_index]
-    # # noinspection PyBroadException
-    # try:
-    #     button.focus_force()
-    #     button_text = button.cget('text')
-    #     button_text_formatted = format_image_file_name(button_text)
-    #     image1 = Image.open(f"{button_text_formatted}")
-    #     img = ImageTk.PhotoImage(image1)
-    # except Exception:
-    #     pass
-    #     img = ""
-    # button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
-    # generate_text_label(button.cget('text'))
-    # # if window.title() != "UltraRetro":
-    # display_game_img(img)
 
 
 def format_image_file_name(image_text):
@@ -433,9 +437,10 @@ def display_game_img(image):
 
 
 def remove_widgets(janela):
-    for widget in janela.winfo_children():
-        print(widget)
-        widget.destroy()
+    janela.destroy()
+    # for widget in janela.winfo_children():
+    #     print(widget)
+    #     widget.destroy()
 
 
 def back_to_menu():
@@ -444,12 +449,14 @@ def back_to_menu():
     global emulator_current_focus
     global buttons_frame
     current_index = 0
-    remove_widgets(window)
+    remove_widgets(buttons_frame)
     initial_screen(window)
     label1 = Label(window, image=DEFAULT_BG)
     label1.place(x=0, y=0, relwidth=1, relheight=1)
     buttons_frame = Frame(window)
-    create_emulators_list()
+    label_frame_image = Label(buttons_frame, image=DEFAULT_BG)
+    label_frame_image.place(x=0, y=0, relwidth=1, relheight=1)
+    create_emulators_list(0)
     generate_exit_button()
     joystick.update_root(window)
     update_application()
@@ -457,9 +464,15 @@ def back_to_menu():
 
 
 def generate_exit_button():
-    row = len(EMULATOR_LIST)
+    global exit_button
+    global buttons_frame
+    # noinspection PyBroadException
+    try:
+        exit_button.destroy()
+    except Exception:
+        pass
     exit_button = Button(buttons_frame)
     exit_button.configure(fg="white", width=30, height=5, text="Exit", font=("Arial", 8, "italic"),
-                         highlightcolor="White", highlightthickness=0, bg="Black",
-                         command=window.destroy)
-    exit_button.grid(row=row, column=0, columnspan=2, pady=10)
+                          highlightcolor="White", highlightthickness=0, bg="Black",
+                          command=window.destroy)
+    exit_button.grid(row=7, column=2, columnspan=2, pady=10)

@@ -22,8 +22,7 @@ def start():
     window_type(window, joysticks)
     window.update()
     window.bind('<KeyPress>', on_key_press)
-    create_emulators_list()
-    generate_exit_button()
+    create_emulators_list(0)
     update_application()
     window.mainloop()
 
