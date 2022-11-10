@@ -1,9 +1,11 @@
 import pygame
 from emulator import move_focus_down, move_focus_up, back_to_menu, access_emulator, DEFAULT_ULTRA_RETRO_PATH
 from mednafen_controller import mednafen_controller_config
-import tkinter
+from tkinter import *
 import time
 import json
+from threading import Thread
+from functools import partial
 
 
 class JoystickControllers:
@@ -67,7 +69,9 @@ class JoystickControllers:
                     for i in data['controllers']:
                         if i["controller"] == device_name:
                             controller_number = i["Controller_number"]
-                            mednafen_controller_config(device_dict, device_name, controller_number)
+                            task = partial(mednafen_controller_config, device_dict, device_name, controller_number)
+                            thread = Thread(target=task)
+                            thread.start()
         self.controllers_data_loaded = True
         """
         Testing button state
@@ -81,7 +85,6 @@ class JoystickControllers:
         new_dict = {}
         for key in key_list:
             time.sleep(0.5)
-            print(f"Press {key}")
             exit_loop = False
             while not exit_loop:
                 self.menu = False
@@ -91,14 +94,16 @@ class JoystickControllers:
                     controller_index += 1
                     controller.quit()
                     controller.init()
+                    assign_buttons_frame = Frame(self.window)
+                    assign_buttons_frame.place(x=530, y=20, width=914, height=108)
                     for button in range(controller.get_numbuttons()):
-                        key_label = tkinter.Label(text=f"Press {key}", fg="white", width=100, height=5,
-                                                  font=("Arial", 12, "italic"), highlightcolor="Black",
-                                                  highlightthickness=5,
-                                                  bg="Brown",
-                                                  highlightbackground="Purple")
-                        key_label.place(x=550, y=900)
-                        # self.window.update()
+                        key_label = Label(assign_buttons_frame, text=f"Press {key.upper()}", fg="white", width=100,
+                                          height=5, font=("Arial", 12, "italic"), highlightcolor="Black",
+                                          highlightthickness=5,
+                                          bg="Brown",
+                                          highlightbackground="Purple")
+                        key_label.place(x=0, y=0)
+                        assign_buttons_frame.update()
                         if controller.get_button(button) == 1:
                             print(button)
                             if button > -1:

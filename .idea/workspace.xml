@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/controllers.cfg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/emulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mednafen_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/mednafen_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

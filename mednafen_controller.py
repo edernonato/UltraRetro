@@ -1,5 +1,7 @@
 from emulator import DEFAULT_ULTRA_RETRO_PATH
 import json
+from threading import Thread
+from functools import partial
 
 # In order to configure the mednafen emulator controls, we need to get same information about the hardware information
 # of the joysticks connected, so we can create the mednafen GUID inside the mednafen.cfg
@@ -58,13 +60,17 @@ def mednafen_controller_config(device_dict, device_name, controller_number):
                 device = ''
             # for device in controller_mednafen_guid:
             #     print(device)
-            save_data_in_file(device, device_name, controller_number)
+            # get_buttons_from_controllers_file(device, device_name, controller_number)
+            task = partial(get_buttons_from_controllers_file, device, device_name, controller_number)
+            new_thread = Thread(target=task)
+            new_thread.start()
 
 
 # The function verifies if there is some control information on controllers.cfg, if there is, the control
 # information is set into the mednafen.cfg file for each emulator and the keys are set to default inside
 # UltraRetro
-def save_data_in_file(device_uid, device_name, controller_number):
+def get_buttons_from_controllers_file(device_uid, device_name, controller_number):
+    print(f"get_buttons_from_controllers_file(device_uid, device_name, controller_number): {controller_number}")
     buttons_mednafen = {}
     # noinspection PyBroadException
     try:
@@ -133,31 +139,43 @@ def save_data_in_file(device_uid, device_name, controller_number):
 
         with open("/root/.mednafen/mednafen.cfg", "r+") as file:
             old = file.read()
-        emulator_list = ["md", "snes", "psx", "gba", "nes", "sms", "lynx", "ss", "wswan", "gb", "gg"]
-        # button_list = ["a", "b", "c", "down", "left", "right", "up", "start", "l", "r", "x", "y", "select"]
         old_list = old.split("\n")
 
         for mednafen_line in old_list:
-            words = mednafen_line.split(" ")
-            for word in range(len(words)):
+            task = partial(save_data_mednafen_file, mednafen_line, device_uid, buttons_mednafen, controller_number)
+            new_thread = Thread(target=task)
+            new_thread.start()
+
+    except Exception:
+        pass
+
+
+def save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, controller_number):
+    emulator_list = ["md", "snes", "psx", "gba", "nes", "sms", "lynx", "ss", "wswan", "gb", "gg"]
+    # noinspection PyBroadException
+    try:
+        words = mednafen_line.split(" ")
+        for word in range(len(words)):
+            for emulator in emulator_list:
                 for button in buttons_mednafen:
-                    for emulator in emulator_list:
-                        switch_button = False
-                        new_button = ""
-                        if words[word] == f"{emulator}.input.port{controller_number}.gamepad.{button}":
-                            new_button = f"{emulator}.input.port{controller_number}.gamepad.{button}" \
-                                         f" joystick {device_uid} {buttons_mednafen[button]}"
-                            switch_button = True
-                        elif words[word] == f"{emulator}.input.builtin.gamepad.{button}":
+                    switch_button = False
+                    new_button = ""
+                    # print(words[word])
+                    if words[word] == f"{emulator}.input.port{controller_number}.gamepad.{button}":
+                        new_button = f"{emulator}.input.port{controller_number}.gamepad.{button}" \
+                                     f" joystick {device_uid} {buttons_mednafen[button]}"
+                        switch_button = True
+                    if controller_number == 1:
+                        if words[word] == f"{emulator}.input.builtin.gamepad.{button}":
                             new_button = f"{emulator}.input.builtin.gamepad.{button} joystick {device_uid}" \
                                          f" {buttons_mednafen[button]}"
                             switch_button = True
-                        if switch_button:
-                            with open("/root/.mednafen/mednafen.cfg", "r+") as file_write:
-                                old_file = file_write.read()  # read everything in the file
-                                file_write.seek(0)  # rewind
-                                new_mednafen_file = old_file.replace(mednafen_line, new_button)
-                                file_write.write(new_mednafen_file)
-                                # print(new_button)
+                    if switch_button:
+                        with open("/root/.mednafen/mednafen.cfg", "r+") as file_write:
+                            old_file = file_write.read()  # read everything in the file
+                            file_write.seek(0)  # rewind
+                            new_mednafen_file = old_file.replace(mednafen_line, new_button)
+                            file_write.write(new_mednafen_file)
+                            print(new_button)
     except Exception:
         pass
