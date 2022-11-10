@@ -101,8 +101,6 @@ def update_application():
 def create_emulators_list(index):
     global emulators_list_index
     global buttons_frame
-    print(EMULATOR_LIST)
-    print(len(EMULATOR_LIST) - 1)
     max_index = len(EMULATOR_LIST) - 1
     buttons_frame_start()
     if index < -8:
