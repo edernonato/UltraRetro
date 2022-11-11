@@ -31,20 +31,27 @@ global exit_button
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
 # ROMS_FOLDER = "G:/roms/UltraRetro"
-Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Super Nintendo", "Playstation",
-                             "Master System", "Atari Lynx", "Sega Game Gear", "WonderSwan", "Sega Saturn"],
-                "PCSXR": "Playstation",
-                "Snes9x EX": "Super Nintendo"}
+
+Applications = {"Mednafen": ["Mega Drive", "Nintendo", "Game Boy Advance", "Game Boy Color", "Super Nintendo",
+                             "Playstation", "Master System", "Atari Lynx", "Sega Game Gear", "WonderSwan",
+                             "Sega Saturn"], "PCSXR": "Playstation", "Snes9x EX": "Super Nintendo"}
+
 mednafen_emulators_name = {"Playstation": ["psx", ".yscale 4.6", ".xscale 4.65"],
                            "Mega Drive": ["md", ".yscale 4.85", ".xscale 5.09"],
                            "Nintendo": ["nes", ".yscale 4.85", ".xscale 5.75"],
                            "Game Boy Advance": ["gba", ".yscale 6.75", ".xscale 6.75"],
+                           "Game Boy Color": ["gb", ".yscale 7.5", ".xscale 10.15"],
                            "Super Nintendo": ["snes", ".yscale 4.85", ".xscale 5.79"],
                            "Master System": ["ss", ".yscale 10.75", ".xscale 10.75"],
                            "Atari Lynx": ["lynx", ".yscale 9.9", ".xscale 10.0"],
                            "Sega Game Gear": ["gg", ".yscale 7.3", ".xscale 9.0"],
                            "WonderSwan": ["wswan", ".yscale 7.3", ".xscale 9.0"],
                            "Sega Saturn": ["ss", ".yscale 7.3", ".xscale 9.0"]}
+
+emulator_rom_extensions = {"Playstation": ["cue"], "Mega Drive": ["zip"], "Nintendo": ["zip", "nes"],
+                           "Game Boy Advance": ["zip", "gba"], "Game Boy Color": ["zip"],
+                           "Super Nintendo": ["zip"], "Master System": ["zip"], "Atari Lynx": ["zip"],
+                           "Sega Game Gear": ["zip"], "WonderSwan": ["zip"], "Sega Saturn": ["chd"]}
 EMULATOR_LIST = os.listdir(ROMS_FOLDER)
 EMULATOR_LIST.sort()
 current_rom_focus = None
@@ -220,13 +227,19 @@ def access_emulator(emulator, index):
     global joystick
     global emulator_clicked
     global buttons_frame
+    global emulator_rom_extensions
     emulator_clicked = emulator
     current_index = -1
     remove_widgets(buttons_frame)
     path = f"{ROMS_FOLDER}/{emulator}/"
     roms = os.listdir(path)
+    updated_roms = []
+    for extension in emulator_rom_extensions[emulator]:
+        for rom in roms[:]:
+            if rom[-3:] == extension:
+                updated_roms.append(rom)
+    roms = updated_roms
     roms.sort()
-
     window.title(f"{emulator.title()} Window")
     window.geometry("1920x1080")
     # window.geometry("1024x768")
@@ -246,18 +259,18 @@ def access_emulator(emulator, index):
     generate_roms(roms, index, final_index, emulator)
 
     # Button created for testing
-    cmd = partial(controller_config, 1)
-    user = os.popen('whoami').read()
-    new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
-                        highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
-                        command=cmd)
-    new_button.grid(row=0, column=1)
-    cmd = partial(controller_config, 2)
-    user = os.popen('whoami').read()
-    new_button2 = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
-                         highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
-                         command=cmd)
-    new_button2.grid(row=1, column=5)
+    # cmd = partial(controller_config, 1)
+    # user = os.popen('whoami').read()
+    # new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
+    #                     highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
+    #                     command=cmd)
+    # new_button.grid(row=0, column=1)
+    # cmd = partial(controller_config, 2)
+    # user = os.popen('whoami').read()
+    # new_button2 = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
+    #                      highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
+    #                      command=cmd)
+    # new_button2.grid(row=1, column=5)
 
     joystick.update_emulator_index(len(roms), emulator, final_index)
 
@@ -290,6 +303,7 @@ def open_overlay(emulator, rom):
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
     func1 = partial(open_rom, emulator, rom)
+    # func1 = partial(print, emulator, rom)
     Thread(target=func1).start()
     Thread(target=window.mainloop()).start()
 
@@ -315,6 +329,7 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
     for i in range(index, final_index):
         if i <= len(rom_games):
             chosen_rom = partial(open_overlay, emulator, rom_games[i])
+            # chosen_rom = partial(print, emulator, rom_games[i])
             buttons[rom_games[i]] = Button(buttons_frame)
             buttons[rom_games[i]].configure(fg="white", width=50, height=2, text=rom_games[i],
                                             font=("Arial", 10, "italic"), highlightcolor="White",
@@ -322,8 +337,8 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
                                             activeforeground="Red", cursor="man", takefocus=1)
             buttons[rom_games[i]].grid(row=i - index, column=0, columnspan=3, padx=10, pady=5)
 
-    buttons[rom_games[index]].focus()
-    current_rom_focus = buttons[rom_games[index]]
+    # buttons[rom_games[index]].focus()
+    # current_rom_focus = buttons[rom_games[index]]
 
 
 def move_focus_down():
