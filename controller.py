@@ -11,7 +11,7 @@ from functools import partial
 class JoystickControllers:
     def __init__(self, root):
         self.menu = True
-        self.controllers_data_loaded = False
+        self.controllers_data_loaded = True
         self.controller1 = None
         self.controller1_buttons = {}
         self.controller2 = None

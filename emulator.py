@@ -268,18 +268,16 @@ def access_emulator(emulator, index):
 
 def open_rom(emulator, rom):
     global DEFAULT_ULTRA_RETRO_PATH
-    print(emulator)
     if emulator in Applications["Mednafen"]:
-        print(emulator)
         yscale = mednafen_emulators_name[emulator][1]
         xscale = mednafen_emulators_name[emulator][2]
         mednafen_emulator = mednafen_emulators_name[emulator][0]
-        os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} "
+        os.system(f"pasuspender -- /usr/games/mednafen -{mednafen_emulator}{yscale} "
                   f"-{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
-    # elif emulator in Applications['PCSXR']:
-    #     os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
-    # elif emulator in Applications['Snes9x EX']:
-    #     os.system(f'"{DEFAULT_ULTRA_RETRO_PATH}/Snes9x EX+/s9xp" "{ROMS_FOLDER}/{emulator}/{rom}"')
+    elif emulator in Applications['PCSXR']:
+        os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")
+    elif emulator in Applications['Snes9x EX']:
+        os.system(f'"{DEFAULT_ULTRA_RETRO_PATH}/Snes9x EX+/s9xp" "{ROMS_FOLDER}/{emulator}/{rom}"')
     close_overlay()
 
 
@@ -291,7 +289,7 @@ def open_overlay(emulator, rom):
     img = ImageTk.PhotoImage(image1)
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
-    func1 = partial(open_rom, emulator, rom)    
+    func1 = partial(open_rom, emulator, rom)
     Thread(target=func1).start()
     Thread(target=window.mainloop()).start()
 
