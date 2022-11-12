@@ -254,7 +254,6 @@ def access_emulator(emulator, index):
     bg_game_buttons_frame = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/{emulator}.png")
     label_buttons = Label(buttons_frame, image=bg_game_buttons_frame, background="Black")
     label_buttons.place(x=0, y=0, relwidth=1, relheight=1)
-
     generate_roms(roms, index, final_index, emulator)
     # Button created for testing
     # cmd = partial(controller_config, 1)
@@ -269,7 +268,6 @@ def access_emulator(emulator, index):
     #                      highlightcolor="White", highlightthickness=0, bg="Black", takefocus=0,
     #                      command=cmd)
     # new_button2.grid(row=1, column=5)
-
     joystick.update_emulator_index(len(roms), emulator, final_index)
 
     move_focus_down()
@@ -301,7 +299,6 @@ def open_overlay(emulator, rom):
     overlay_img = Label(image=img)
     overlay_img.place(x=0, y=0)
     func1 = partial(open_rom, emulator, rom)
-    # func1 = partial(print, emulator, rom)
     Thread(target=func1).start()
     Thread(target=window.mainloop()).start()
 
@@ -321,18 +318,20 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
     global DEFAULT_ULTRA_RETRO_PATH
     global buttons_frame
     global images_dict
+    global current_index
     final_index = final_index_roms
-    if final_index > len(rom_games):
+    if final_index > len(rom_games) - 1:
         final_index = len(rom_games)
+    if index < len(rom_games) * -1:
+        index = 0
+        final_index = 20
     buttons = {}
     images_dict = {}
     for i in range(index, final_index):
         if i <= len(rom_games):
             chosen_rom = partial(open_overlay, emulator, rom_games[i])
             original_display_name = rom_games[i]
-            # display_name = rom_games[i]
             display_name = rom_games[i][:-4].strip().replace("_", " ").title()
-            # display_name = re.sub(r"\(.*?\)|\[.*?]", "", display_name)
             display_name = re.sub(r"\[.*?]", "", display_name)
             images_dict[display_name] = original_display_name
             buttons[rom_games[i]] = Button(buttons_frame)
@@ -341,7 +340,11 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
                                             highlightthickness=0, bg="Black", command=chosen_rom,
                                             activeforeground="Red", cursor="man", takefocus=1)
             buttons[rom_games[i]].grid(row=i - index, column=0, columnspan=3, padx=10, pady=5)
-
+        buttons[rom_games[index]].focus()
+        current_rom_focus = buttons[rom_games[index]]
+    if final_index + 1 > len(rom_games):
+        current_index = 0
+        final_index = 0
     # buttons[rom_games[index]].focus()
     # current_rom_focus = buttons[rom_games[index]]
 
@@ -353,12 +356,18 @@ def move_focus_down():
     global final_index
     global emulators_list_index
     global images_dict
+    global roms
     remove_text_label()
     button = buttons_frame.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
+
     if current_index >= len(buttons_frame.winfo_children()) - 1:
         if window.title() != "UltraRetro" and len(roms) > 20:
-            access_emulator(emulator_clicked, final_index)
+            button_name = button.cget("text")
+            if images_dict[button_name] == roms[len(roms) - 1]:
+                access_emulator(emulator_clicked, 0)
+            else:
+                access_emulator(emulator_clicked, final_index)
         elif window.title() == "UltraRetro":
             create_emulators_list(emulators_list_index)
         current_index = 0
@@ -445,13 +454,22 @@ def display_game_img(button_text):
         values.destroy()
     if game_name == '':
         return
+    img = ''
     # noinspection PyBroadException
     try:
         button_text_formatted = format_image_file_name(button_text)
         image1 = Image.open(f"{button_text_formatted}")
         img = ImageTk.PhotoImage(image1)
+        label_image = Label(image=img)
+        label_image.place(x=600, y=200)
+        label_images[img] = label_image
+        joystick.update_root(window)
+        window.mainloop()
+        return
     except Exception:
-        img = ''
+        pass
+    # noinspection PyBroadException
+    try:
         images_folder = os.listdir(f"{ROMS_FOLDER}/{emulator_clicked}/images")
         for image in images_folder:
             game_name1 = game_name[:-4].strip()
@@ -459,14 +477,12 @@ def display_game_img(button_text):
             image_words = image1.split(' ')
             game_words = game_name1.split(' ')
             if len(game_words) == 1:
-                print(game_words[0])
                 if game_words[0] in image_words:
                     image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{image}")
                     img = ImageTk.PhotoImage(image1)
                     break
             elif len(game_words) == 2:
                 if game_words[0] in image_words and game_words[1] in image_words:
-                    print(f"{game_words[0]} in image_words and {game_words[1]} in {image_words}:")
                     image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{image}")
                     img = ImageTk.PhotoImage(image1)
                     break
@@ -484,6 +500,9 @@ def display_game_img(button_text):
                         joystick.update_root(window)
                         window.mainloop()
                         return
+    except Exception:
+        pass
+    # noinspection PyBroadException
 
     label_image = Label(image=img)
     label_image.place(x=600, y=200)
@@ -494,9 +513,9 @@ def display_game_img(button_text):
 
 def remove_widgets(window_to_destroy):
     window_to_destroy.destroy()
-    # for widget in janela.winfo_children():
-    #     print(widget)
+    # for widget in window_to_destroy.winfo_children():
     #     widget.destroy()
+    # window_to_destroy.destroy()
 
 
 def back_to_menu():
@@ -506,6 +525,7 @@ def back_to_menu():
     global buttons_frame
     current_index = 0
     remove_widgets(buttons_frame)
+    # remove_widgets(window)
     initial_screen(window)
     label1 = Label(window, image=DEFAULT_BG)
     label1.place(x=0, y=0, relwidth=1, relheight=1)
