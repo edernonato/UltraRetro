@@ -256,7 +256,6 @@ def access_emulator(emulator, index):
     label_buttons.place(x=0, y=0, relwidth=1, relheight=1)
 
     generate_roms(roms, index, final_index, emulator)
-
     # Button created for testing
     # cmd = partial(controller_config, 1)
     # user = os.popen('whoami').read()
@@ -333,7 +332,8 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
             original_display_name = rom_games[i]
             # display_name = rom_games[i]
             display_name = rom_games[i][:-4].strip().replace("_", " ").title()
-            display_name = re.sub(r"\(.*?\)|\[.*?]", "", display_name)
+            # display_name = re.sub(r"\(.*?\)|\[.*?]", "", display_name)
+            display_name = re.sub(r"\[.*?]", "", display_name)
             images_dict[display_name] = original_display_name
             buttons[rom_games[i]] = Button(buttons_frame)
             buttons[rom_games[i]].configure(fg="white", width=50, height=2, text=display_name,
@@ -375,15 +375,12 @@ def move_focus_down():
         button.focus_force()
         button_text = button.cget('text')
         button_text = images_dict[button_text]
-        button_text_formatted = format_image_file_name(button_text)
-        image1 = Image.open(f"{button_text_formatted}")
-        img = ImageTk.PhotoImage(image1)
     except Exception:
-        img = ""
-        # button_text_formatted = ""
+        button_text = ""
+
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
-    display_game_img(img)
+    display_game_img(button_text)
 
 
 def move_focus_up():
@@ -414,16 +411,13 @@ def move_focus_up():
         button.focus_force()
         button_text = button.cget('text')
         button_text = images_dict[button_text]
-        button_text_formatted = format_image_file_name(button_text)
-        image1 = Image.open(f"{button_text_formatted}")
-        img = ImageTk.PhotoImage(image1)
     except Exception:
         pass
-        img = ""
-        # button_text_formatted = ""
+        button_text = ""
+
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
-    display_game_img(img)
+    display_game_img(button_text)
 
 
 def format_image_file_name(image_text):
@@ -437,29 +431,69 @@ def format_image_file_name(image_text):
     return image_name_formatted + "png"
 
 
-def display_game_img(image):
+# Function try to find an image with the same name of the game,
+# in case it is not found, try to find an image with part of the name of the game
+def display_game_img(button_text):
     global label_images
     global window
     global emulator_clicked
     global final_index
     global ROMS_FOLDER
+    # return
+    game_name = button_text
     for values in label_images.values():
         values.destroy()
-
-    if image == '':
-        for values in label_images.values():
-            values.destroy()
+    if game_name == '':
         return
+    # noinspection PyBroadException
+    try:
+        button_text_formatted = format_image_file_name(button_text)
+        image1 = Image.open(f"{button_text_formatted}")
+        img = ImageTk.PhotoImage(image1)
+    except Exception:
+        img = ''
+        images_folder = os.listdir(f"{ROMS_FOLDER}/{emulator_clicked}/images")
+        for image in images_folder:
+            game_name1 = game_name[:-4].strip()
+            image1 = image[:-4].strip()
+            image_words = image1.split(' ')
+            game_words = game_name1.split(' ')
+            if len(game_words) == 1:
+                print(game_words[0])
+                if game_words[0] in image_words:
+                    image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{image}")
+                    img = ImageTk.PhotoImage(image1)
+                    break
+            elif len(game_words) == 2:
+                if game_words[0] in image_words and game_words[1] in image_words:
+                    print(f"{game_words[0]} in image_words and {game_words[1]} in {image_words}:")
+                    image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{image}")
+                    img = ImageTk.PhotoImage(image1)
+                    break
+            elif len(game_words) > 2:
+                count = 0
+                for word in game_words:
+                    if word in image_words:
+                        count += 1
+                    elif count >= 2:
+                        image1 = Image.open(f"{ROMS_FOLDER}/{emulator_clicked}/images/{image}")
+                        img = ImageTk.PhotoImage(image1)
+                        label_image = Label(image=img)
+                        label_image.place(x=600, y=200)
+                        label_images[img] = label_image
+                        joystick.update_root(window)
+                        window.mainloop()
+                        return
 
-    label_image = Label(image=image)
+    label_image = Label(image=img)
     label_image.place(x=600, y=200)
-    label_images[image] = label_image
+    label_images[img] = label_image
     joystick.update_root(window)
     window.mainloop()
 
 
-def remove_widgets(janela):
-    janela.destroy()
+def remove_widgets(window_to_destroy):
+    window_to_destroy.destroy()
     # for widget in janela.winfo_children():
     #     print(widget)
     #     widget.destroy()
