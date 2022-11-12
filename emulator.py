@@ -7,7 +7,7 @@ from threading import Thread
 import pathlib
 from tkvideo import tkvideo
 import random
-
+import re
 
 global window
 global video_frame
@@ -26,7 +26,7 @@ global emulator_current_focus
 global buttons_frame
 global emulators_list_index
 global exit_button
-
+global images_dict
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
@@ -112,7 +112,6 @@ def create_emulators_list(index):
     buttons_frame_start()
     if index < -8:
         index = index + 11
-
     emulators_list_index = index + 8
     counter = 0
     for emulator in range(index, emulators_list_index):
@@ -322,16 +321,22 @@ def generate_roms(rom_games, index, final_index_roms, emulator):
     global buttons_frame
     global DEFAULT_ULTRA_RETRO_PATH
     global buttons_frame
+    global images_dict
     final_index = final_index_roms
     if final_index > len(rom_games):
         final_index = len(rom_games)
     buttons = {}
+    images_dict = {}
     for i in range(index, final_index):
         if i <= len(rom_games):
             chosen_rom = partial(open_overlay, emulator, rom_games[i])
-            # chosen_rom = partial(print, emulator, rom_games[i])
+            original_display_name = rom_games[i]
+            # display_name = rom_games[i]
+            display_name = rom_games[i][:-4].strip().replace("_", " ").title()
+            display_name = re.sub(r"\(.*?\)|\[.*?]", "", display_name)
+            images_dict[display_name] = original_display_name
             buttons[rom_games[i]] = Button(buttons_frame)
-            buttons[rom_games[i]].configure(fg="white", width=50, height=2, text=rom_games[i],
+            buttons[rom_games[i]].configure(fg="white", width=50, height=2, text=display_name,
                                             font=("Arial", 10, "italic"), highlightcolor="White",
                                             highlightthickness=0, bg="Black", command=chosen_rom,
                                             activeforeground="Red", cursor="man", takefocus=1)
@@ -347,6 +352,7 @@ def move_focus_down():
     global emulator_clicked
     global final_index
     global emulators_list_index
+    global images_dict
     remove_text_label()
     button = buttons_frame.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
@@ -368,11 +374,13 @@ def move_focus_down():
     try:
         button.focus_force()
         button_text = button.cget('text')
+        button_text = images_dict[button_text]
         button_text_formatted = format_image_file_name(button_text)
         image1 = Image.open(f"{button_text_formatted}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
         img = ""
+        # button_text_formatted = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
     display_game_img(img)
@@ -384,7 +392,7 @@ def move_focus_up():
     global emulator_clicked
     global emulators_list_index
     remove_text_label()
-    display_game_img("")
+    # display_game_img("")
     button = buttons_frame.winfo_children()[current_index]
     button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
     if current_index <= 0:
@@ -405,12 +413,14 @@ def move_focus_up():
     try:
         button.focus_force()
         button_text = button.cget('text')
+        button_text = images_dict[button_text]
         button_text_formatted = format_image_file_name(button_text)
         image1 = Image.open(f"{button_text_formatted}")
         img = ImageTk.PhotoImage(image1)
     except Exception:
         pass
         img = ""
+        # button_text_formatted = ""
     button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
     generate_text_label(button.cget('text'))
     display_game_img(img)
@@ -432,6 +442,7 @@ def display_game_img(image):
     global window
     global emulator_clicked
     global final_index
+    global ROMS_FOLDER
     for values in label_images.values():
         values.destroy()
 
