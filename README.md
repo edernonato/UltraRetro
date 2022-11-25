@@ -2,6 +2,11 @@
 Retro Game System
 <h1 align="center"> Ultra Retro </h1>
 
+<h4 align="center">     :construction:  Project in its initial state.  :construction:</h4>
+
+
+<h4 align="center">     Ultra Retro is a multi emulator system, able to unify all the main console emulators in a single place.</h4>
+
 
 ![playstation_menu_screenshot](https://user-images.githubusercontent.com/99426154/203882850-6a4b6c8f-ec6d-42e6-8ccd-0017193ab477.png)
 
@@ -23,7 +28,3 @@ Retro Game System
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=In%20Development&color=GREEN&style=for-the-badge)
 
 
-<h4 align="center">     :construction:  Project in its initial state.  :construction:</h4>
-
-
-<h4 align="center">     Ultra Retro is a multi emulator system, able to unify all the main console emulators in a single place.</h4>
