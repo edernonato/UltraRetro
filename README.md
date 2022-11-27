@@ -23,7 +23,7 @@ Retro Game System
 
 
 
-![ultraretro2](https://user-images.githubusercontent.com/99426154/200126552-38cda494-6a5c-4d28-80df-dac8b403ddd5.png)
+
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=In%20Development&color=GREEN&style=for-the-badge)
 
