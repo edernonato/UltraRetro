@@ -262,7 +262,7 @@ def access_emulator(emulator, index):
     label_buttons = Label(buttons_frame, image=bg_game_buttons_frame, background="Black")
     label_buttons.place(x=0, y=0, relwidth=1, relheight=1)
     generate_roms(roms, index, final_index, emulator)
-    # Button created for testing
+    # Button created for testing 1
     # cmd = partial(controller_config, 1)
     # user = os.popen('whoami').read()
     # new_button = Button(fg="white", width=30, height=2, text=f"{user}", font=("Arial", 12, "italic"),
