@@ -11,7 +11,7 @@ from functools import partial
 class JoystickControllers:
     def __init__(self, root):
         self.menu = True
-        self.controllers_data_loaded = True
+        self.controllers_data_loaded = False
         self.controller1 = None
         self.controller1_buttons = {}
         self.controller2 = None
@@ -45,6 +45,7 @@ class JoystickControllers:
         self.len_roms = len_roms
 
     def get_controllers(self):
+
         pygame.joystick.init()
         for joy in range(pygame.joystick.get_count()):
             pygame.joystick.Joystick(joy).init()
@@ -60,19 +61,21 @@ class JoystickControllers:
             device_dict = {"numaxis": device_num_axis, "numbuttons": num_buttons}
             if not self.controllers_data_loaded:
                 if device_dict:
-                    if device_name == "Xbox One S Controller":
-                        device_name = "Microsoft X-Box One S pad"
-                    # print(device_dict)
-                    # print(device_name)
                     controllers_file = open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
                     data = json.load(controllers_file)
                     for i in data['controllers']:
                         if i["controller"] == device_name:
+                            # Still need to handle XBOX generic controller
+                            if device_name == "Xbox One S Controller":
+                                device_name = "Microsoft X-Box One S pad"
                             controller_number = i["Controller_number"]
-                            task = partial(mednafen_controller_config, device_dict, device_name, controller_number)
-                            thread = Thread(target=task)
-                            thread.start()
+                            # Writing to mednafen file
+                            # task = partial(mednafen_controller_config, device_dict, device_name, controller_number)
+                            # print(f"{mednafen_controller_config}, {device_dict}, {device_name}, {controller_number}")
+                            # thread = Thread(target=task)
+                            # thread.start()
         self.controllers_data_loaded = True
+
         """
         Testing button state
         # for button in range(device_num_buttons):
@@ -121,7 +124,7 @@ class JoystickControllers:
         is_control_in_list = False
         for joystick in joysticks:
             joysticks_to_write = joystick
-            with open("/usr/games/UltraRetro/controllers.cfg", "r+") as f:
+            with open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg", "r+") as f:
                 data = json.load(f)
                 control_index = 0
                 for controller in data["controllers"]:
@@ -147,47 +150,40 @@ class JoystickControllers:
                     if ctr.get_name() == control['controller']:
                         if control["Controller_number"] == 1:
                             self.controller1 = ctr
+                            print("CONTROLLER ADDED")
                         elif control["Controller_number"] == 2:
                             self.controller2 = ctr
+            # print(self.button_list)
         except Exception:
             pass
 
+# Assigning buttons state to variables, events can be handled relating button states to functions.
     def read_button_list(self):
         # noinspection PyBroadException
         try:
             for controller_data in self.button_list:
-                for button in controller_data:
-                    if button == 'a':
-                        self.controller1_buttons['joy_a'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_a'] = self.controller2.get_button(controller_data[button])
-                    if button == 'b':
-                        self.controller1_buttons['joy_b'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_b'] = self.controller2.get_button(controller_data[button])
-                    if button == 'x':
-                        self.controller1_buttons['joy_x'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_x'] = self.controller2.get_button(controller_data[button])
-                    if button == 'y':
-                        self.controller1_buttons['joy_y'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_y'] = self.controller2.get_button(controller_data[button])
-                    if button == 'l':
-                        self.controller1_buttons['joy_lb'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_lb'] = self.controller2.get_button(controller_data[button])
-                    if button == 'r':
-                        self.controller1_buttons['joy_rb'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_rb'] = self.controller2.get_button(controller_data[button])
-                    if button == 'lt':
-                        self.controller1_buttons['joy_lt'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_lt'] = self.controller2.get_button(controller_data[button])
-                    if button == 'rt':
-                        self.controller1_buttons['joy_rt'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_rt'] = self.controller2.get_button(controller_data[button])
-                    if button == 'start':
-                        self.controller1_buttons['joy_start'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_start'] = self.controller2.get_button(controller_data[button])
-                    if button == 'select':
-                        self.controller1_buttons['joy_select'] = self.controller1.get_button(controller_data[button])
-                        self.controller2_buttons['joy_select'] = self.controller2.get_button(controller_data[button])
-
+                if self.controller1:
+                    self.controller1_buttons['joy_a'] = self.controller1.get_button(controller_data['a'])
+                    self.controller1_buttons['joy_b'] = self.controller1.get_button(controller_data['b'])
+                    self.controller1_buttons['joy_y'] = self.controller1.get_button(controller_data['y'])
+                    self.controller1_buttons['joy_x'] = self.controller1.get_button(controller_data['x'])
+                    self.controller1_buttons['joy_lb'] = self.controller1.get_button(controller_data['l'])
+                    self.controller1_buttons['joy_rb'] = self.controller1.get_button(controller_data['r'])
+                    self.controller1_buttons['joy_lt'] = self.controller1.get_button(controller_data['lt'])
+                    self.controller1_buttons['joy_rt'] = self.controller1.get_button(controller_data['rt'])
+                    self.controller1_buttons['joy_start'] = self.controller1.get_button(controller_data['start'])
+                    self.controller1_buttons['joy_select'] = self.controller1.get_button(controller_data['select'])
+                if self.controller2:
+                    self.controller2_buttons['joy_a'] = self.controller2.get_button(controller_data['a'])
+                    self.controller2_buttons['joy_b'] = self.controller2.get_button(controller_data['b'])
+                    self.controller2_buttons['joy_y'] = self.controller2.get_button(controller_data['y'])
+                    self.controller2_buttons['joy_x'] = self.controller2.get_button(controller_data['x'])
+                    self.controller2_buttons['joy_lb'] = self.controller2.get_button(controller_data['l'])
+                    self.controller2_buttons['joy_rb'] = self.controller2.get_button(controller_data['r'])
+                    self.controller2_buttons['joy_lt'] = self.controller2.get_button(controller_data['lt'])
+                    self.controller2_buttons['joy_rt'] = self.controller2.get_button(controller_data['rt'])
+                    self.controller2_buttons['joy_start'] = self.controller2.get_button(controller_data['start'])
+                    self.controller2_buttons['joy_select'] = self.controller2.get_button(controller_data['select'])
         except Exception:
             pass
 
@@ -203,26 +199,51 @@ class JoystickControllers:
                     if self.window.focus_get():
                         for event in events:
                             if event.type == pygame.JOYBUTTONDOWN:
-                                if self.controller1_buttons['joy_a'] == 1 or self.controller2_buttons['joy_a'] == 1:
+                                if self.controller2:
+                                    if self.controller2_buttons['joy_a'] == 1:
+                                        self.window.focus_get().invoke()
+                                    if self.controller2_buttons['joy_b'] == 1:
+                                        back_to_menu()
+                                    if self.controller2_buttons['joy_y'] == 1:
+                                        print(self.assigned_keys)
+                                    if self.controller2_buttons['joy_start'] == 1:
+                                        print("START")
+                                    if self.controller2_buttons['joy_select'] == 1:
+                                        print("select")
+                                    if self.controller2_buttons['joy_start'] == 1 and \
+                                            self.controller2_buttons['joy_select'] == 1:
+                                        self.window.destroy()
+                                if self.controller1_buttons['joy_a'] == 1:
                                     self.window.focus_get().invoke()
-                                if self.controller1_buttons['joy_b'] == 1 or self.controller2_buttons['joy_b'] == 1:
+                                if self.controller1_buttons['joy_b'] == 1:
                                     back_to_menu()
-                                if self.controller1_buttons['joy_y'] == 1 or self.controller2_buttons['joy_y'] == 1:
+                                if self.controller1_buttons['joy_y'] == 1:
                                     print(self.assigned_keys)
-                                if self.controller1_buttons['joy_lt'] == 1 or self.controller2_buttons['joy_lt'] == 1:
+                                if self.controller1_buttons['joy_lt'] == 1:
                                     self.window.event_generate('<<LT>>')
-                                if self.controller1_buttons['joy_rt'] == 1 or self.controller2_buttons['joy_rt'] == 1:
+                                if self.controller1_buttons['joy_rt'] == 1:
                                     self.window.event_generate('<<RT>>')
-                                if self.controller1_buttons['joy_start'] == 1 and\
-                                        self.controller1_buttons['joy_select'] == 1 or \
-                                        self.controller2_buttons['joy_start'] == 1 and \
-                                        self.controller2_buttons['joy_select'] == 1:
+                                if self.controller1_buttons['joy_start'] == 1:
+                                    print("START")
+                                if self.controller1_buttons['joy_select'] == 1:
+                                    print("select")
+                                if self.controller1_buttons['joy_start'] == 1 and \
+                                        self.controller1_buttons['joy_select'] == 1:
                                     self.window.destroy()
 
                             # Adding Controller Event
                             if event.type == 1541:
+                                print("CONTROL CONNECTED")
+                                self.controllers_data_loaded = False
+                                self.controller1 = None
+                                self.controller1_buttons = {}
+                                self.controller2 = None
+                                self.controller2_buttons = {}
+                                self.button_list = None
+                                self.update_root(self.window)
                                 self.controllers = []
                                 self.get_controllers()
+
                             if event.type == pygame.JOYHATMOTION:
                                 hats = joystick.get_numhats()
                                 for i in range(hats):

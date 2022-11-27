@@ -5,8 +5,7 @@ from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
 import pathlib
-from tkvideo import tkvideo
-import random
+from tk_video_eder import tkvideo
 import re
 
 global window
@@ -27,6 +26,8 @@ global buttons_frame
 global emulators_list_index
 global exit_button
 global images_dict
+global player
+# player = None
 
 DEFAULT_ULTRA_RETRO_PATH = pathlib.Path(__file__).parent.resolve()
 ROMS_FOLDER = "/usr/games/roms"
@@ -100,7 +101,6 @@ def update_application():
     button_img = PhotoImage(file=f"{DEFAULT_ULTRA_RETRO_PATH}/Images/update_button.png")
     update_button = Button(fg="Red", width=270, height=100, text="Update", highlightcolor="White",
                            bg="Black", image=button_img, borderwidth=0, command=cmd, compound=LEFT)
-    # update_button.grid(row=0, column=4, columnspan=2, padx=10, pady=10)
     update_button.place(x=1600, y=20)
     window.mainloop()
 
@@ -148,42 +148,49 @@ def create_emulators(name, index):
     move_focus_down()
 
 
-def generate_video_label():
+def generate_preview_emulator_videos():
     # return
     global video_frame
     global window
     global ROMS_FOLDER
     global emulator_current_focus
     global video_label
+    global player
     # noinspection PyBroadException
     try:
-        remove_video_label()
+        player.stop()
+        remove_preview_emulator_videos()
     except Exception:
         pass
     # noinspection PyBroadException
     try:
+        games = os.listdir(f"{ROMS_FOLDER}/{emulator_current_focus}/videos")
         video_frame = Frame(window)
         video_label = Label(video_frame)
+        player = tkvideo(f"{ROMS_FOLDER}/{emulator_current_focus}/videos", video_label, loop=0,
+                         size=(800, 600), video_list=games)
         video_frame.place(x=600, y=200)
         video_label.grid(row=0, column=0)
-        games = os.listdir(f"{ROMS_FOLDER}/{emulator_current_focus}/videos")
-        game_index = random.randint(0, len(games) - 1)
-        player = tkvideo(f"{ROMS_FOLDER}/{emulator_current_focus}/videos/{games[game_index]}", video_label, loop=1,
-                         size=(800, 600))
-        player.play()
-        window.after(3000, generate_video_label)
+        player.play_list()
     except Exception:
         pass
 
 
-def remove_video_label():
+def remove_preview_emulator_videos():
     global video_label
     global video_frame
     # noinspection PyBroadException
     try:
-        # video_frame.place_forget()
-        # video_label.grid_forget()
-        video_frame.destroy()
+        if isinstance(video_frame, Frame):
+            video_frame.place_forget()
+        if isinstance(video_label, Label):
+            video_label.grid_forget()
+    except Exception:
+        pass
+    # noinspection PyBroadException
+    try:
+        video_frame = None
+        video_label = None
     except Exception:
         pass
 
@@ -204,7 +211,7 @@ def generate_text_label(emulator_focus):
             text_label.place(x=550, y=900)
         except Exception:
             pass
-    generate_video_label()
+    generate_preview_emulator_videos()
 
 
 def remove_text_label():
@@ -215,7 +222,7 @@ def remove_text_label():
         text_label.destroy()
     except Exception:
         pass
-    remove_video_label()
+    remove_preview_emulator_videos()
 
 
 def access_emulator(emulator, index):
@@ -281,7 +288,9 @@ def open_rom(emulator, rom):
         yscale = mednafen_emulators_name[emulator][1]
         xscale = mednafen_emulators_name[emulator][2]
         mednafen_emulator = mednafen_emulators_name[emulator][0]
-        os.system(f"pasuspender -- /usr/games/mednafen -{mednafen_emulator}{yscale} "
+        # os.system(f"pasuspender -- /usr/games/mednafen -{mednafen_emulator}{yscale} "
+        #           f"-{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
+        os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} "
                   f"-{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
     elif emulator in Applications['PCSXR']:
         os.system(f"/usr/games/pcsxr -nogui -cdfile '{ROMS_FOLDER}/{emulator}/{rom}'")

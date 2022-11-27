@@ -2,7 +2,7 @@ from emulator import DEFAULT_ULTRA_RETRO_PATH
 import json
 from threading import Thread
 from functools import partial
-
+import os
 # In order to configure the mednafen emulator controls, we need to get same information about the hardware information
 # of the joysticks connected, so we can create the mednafen GUID inside the mednafen.cfg
 #
@@ -23,6 +23,7 @@ from functools import partial
 
 
 global controller_mednafen_guid
+
 with open("/proc/bus/input/devices", "r") as f:
     devices_file = f.read()  # read everything in the file
     f.seek(0)  # rewind
@@ -70,7 +71,6 @@ def mednafen_controller_config(device_dict, device_name, controller_number):
 # information is set into the mednafen.cfg file for each emulator and the keys are set to default inside
 # UltraRetro
 def get_buttons_from_controllers_file(device_uid, device_name, controller_number):
-    print(f"get_buttons_from_controllers_file(device_uid, device_name, controller_number): {controller_number}")
     buttons_mednafen = {}
     # noinspection PyBroadException
     try:
@@ -136,8 +136,13 @@ def get_buttons_from_controllers_file(device_uid, device_name, controller_number
                     buttons_mednafen["left"] = "abs_5-"
                     buttons_mednafen["right"] = "abs_5+"
         # print(buttons_mednafen)
-
-        with open("/root/.mednafen/mednafen.cfg", "r+") as file:
+        user = os.popen('whoami').read()
+        if user == "root":
+            mednafen_dir = "/root/.mednafen"
+        else:
+            mednafen_dir = f"/home/{user}/.mednafen".replace("\n", "")
+        with open(f"{mednafen_dir}/mednafen.cfg", "r+") as file:
+            print("OPENING FILE")
             old = file.read()
         old_list = old.split("\n")
 
@@ -147,6 +152,7 @@ def get_buttons_from_controllers_file(device_uid, device_name, controller_number
             new_thread.start()
 
     except Exception:
+        print(Exception)
         pass
 
 
@@ -171,11 +177,16 @@ def save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, control
                                          f" {buttons_mednafen[button]}"
                             switch_button = True
                     if switch_button:
-                        with open("/root/.mednafen/mednafen.cfg", "r+") as file_write:
+                        user = os.popen('whoami').read()
+                        if user == "root":
+                            mednafen_dir = "/root/.mednafen"
+                        else:
+                            mednafen_dir = f"/home/{user}/.mednafen".replace("\n", "")
+                        with open(f"{mednafen_dir}/mednafen.cfg", "r+") as file_write:
                             old_file = file_write.read()  # read everything in the file
                             file_write.seek(0)  # rewind
                             new_mednafen_file = old_file.replace(mednafen_line, new_button)
                             file_write.write(new_mednafen_file)
-                            print(new_button)
+                            # print(new_button)
     except Exception:
         pass
