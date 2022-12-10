@@ -1,8 +1,9 @@
-from emulator import DEFAULT_ULTRA_RETRO_PATH
+# from emulator import DEFAULT_ULTRA_RETRO_PATH
 import json
 from threading import Thread
 from functools import partial
 import os
+import time
 # In order to configure the mednafen emulator controls, we need to get same information about the hardware information
 # of the joysticks connected, so we can create the mednafen GUID inside the mednafen.cfg
 #
@@ -21,7 +22,7 @@ import os
 # Bus, vendor, product and version information were extracted from the system file: /proc/bus/input/devices
 # The Axes and Button count were extracted from pygame.Joystick
 
-
+global start_time
 global controller_mednafen_guid
 
 with open("/proc/bus/input/devices", "r") as f:
@@ -32,7 +33,9 @@ devices_file_lines = devices_file.split("\n\n")
 
 
 # Function used to generate the mednafen GUID String. Variable named 'device'.
-def mednafen_controller_config(device_dict, device_name, controller_number):
+def mednafen_controller_config(device_dict, device_name, controller_number, emulator_instance):
+    global start_time
+    start_time = time.time()
     global controller_mednafen_guid
     controller_mednafen_guid = []
     for line in range(len(devices_file_lines)):
@@ -61,8 +64,8 @@ def mednafen_controller_config(device_dict, device_name, controller_number):
                 device = ''
             # for device in controller_mednafen_guid:
             #     print(device)
-            # get_buttons_from_controllers_file(device, device_name, controller_number)
-            task = partial(get_buttons_from_controllers_file, device, device_name, controller_number)
+            # get_buttons_from_controllers_file(device, device_name, controller_number, emulator_instance)
+            task = partial(get_buttons_from_controllers_file, device, device_name, controller_number, emulator_instance)
             new_thread = Thread(target=task)
             new_thread.start()
 
@@ -70,11 +73,11 @@ def mednafen_controller_config(device_dict, device_name, controller_number):
 # The function verifies if there is some control information on controllers.cfg, if there is, the control
 # information is set into the mednafen.cfg file for each emulator and the keys are set to default inside
 # UltraRetro
-def get_buttons_from_controllers_file(device_uid, device_name, controller_number):
+def get_buttons_from_controllers_file(device_uid, device_name, controller_number, emulator_instance):
     buttons_mednafen = {}
     # noinspection PyBroadException
     try:
-        controllers_file = open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
+        controllers_file = open(f"{emulator_instance.DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
         data = json.load(controllers_file)
         for i in data['controllers']:
             index = data['controllers'].index(i)
@@ -147,6 +150,7 @@ def get_buttons_from_controllers_file(device_uid, device_name, controller_number
         old_list = old.split("\n")
 
         for mednafen_line in old_list:
+            # save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, controller_number)
             task = partial(save_data_mednafen_file, mednafen_line, device_uid, buttons_mednafen, controller_number)
             new_thread = Thread(target=task)
             new_thread.start()
@@ -187,6 +191,8 @@ def save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, control
                             file_write.seek(0)  # rewind
                             new_mednafen_file = old_file.replace(mednafen_line, new_button)
                             file_write.write(new_mednafen_file)
-                            # print(new_button)
+                            print(new_button)
+                            global start_time
+                            print("My program took", time.time() - start_time, "to run")
     except Exception:
         pass

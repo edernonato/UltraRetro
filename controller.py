@@ -1,5 +1,5 @@
 import pygame
-from emulator import move_focus_down, move_focus_up, back_to_menu, access_emulator, DEFAULT_ULTRA_RETRO_PATH
+# from emulator import move_focus_down, move_focus_up, back_to_menu, access_emulator, DEFAULT_ULTRA_RETRO_PATH
 from mednafen_controller import mednafen_controller_config
 from tkinter import *
 import time
@@ -9,7 +9,8 @@ from functools import partial
 
 
 class JoystickControllers:
-    def __init__(self, root):
+    def __init__(self, root, emulator_instance):
+        self.emulator_instance = emulator_instance
         self.menu = True
         self.controllers_data_loaded = False
         self.controller1 = None
@@ -25,7 +26,7 @@ class JoystickControllers:
         self.update_root(self.window)
         self.up = None
         self.down = None
-        self.emulator = None
+        self.emulator_name = None
         self.index = None
         self.len_roms = None
         self.button_list_to_assign = ["a", "b", "x", "y", "l", "r", "lt", "rt", "start", "select"]
@@ -40,12 +41,11 @@ class JoystickControllers:
         self.find_events()
 
     def update_emulator_index(self, len_roms, emulator, index):
-        self.emulator = emulator
+        self.emulator_name = emulator
         self.index = index
         self.len_roms = len_roms
 
     def get_controllers(self):
-
         pygame.joystick.init()
         for joy in range(pygame.joystick.get_count()):
             pygame.joystick.Joystick(joy).init()
@@ -61,7 +61,7 @@ class JoystickControllers:
             device_dict = {"numaxis": device_num_axis, "numbuttons": num_buttons}
             if not self.controllers_data_loaded:
                 if device_dict:
-                    controllers_file = open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
+                    controllers_file = open(f"{self.emulator_instance.DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
                     data = json.load(controllers_file)
                     for i in data['controllers']:
                         if i["controller"] == device_name:
@@ -70,8 +70,12 @@ class JoystickControllers:
                                 device_name = "Microsoft X-Box One S pad"
                             controller_number = i["Controller_number"]
                             # Writing to mednafen file
-                            # task = partial(mednafen_controller_config, device_dict, device_name, controller_number)
-                            # print(f"{mednafen_controller_config}, {device_dict}, {device_name}, {controller_number}")
+                            mednafen_controller_config(device_dict, device_name, controller_number,
+                                                       self.emulator_instance)
+                            # task = partial(mednafen_controller_config, device_dict, device_name, controller_number,
+                            #                self.emulator_instance)
+                            print(f"{mednafen_controller_config}, {device_dict}, {device_name}, {controller_number}",
+                                  {self.emulator_instance})
                             # thread = Thread(target=task)
                             # thread.start()
         self.controllers_data_loaded = True
@@ -124,7 +128,7 @@ class JoystickControllers:
         is_control_in_list = False
         for joystick in joysticks:
             joysticks_to_write = joystick
-            with open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg", "r+") as f:
+            with open(f"{self.emulator_instance.DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg", "r+") as f:
                 data = json.load(f)
                 control_index = 0
                 for controller in data["controllers"]:
@@ -142,7 +146,7 @@ class JoystickControllers:
     def read_controller_data(self):
         # noinspection PyBroadException
         try:
-            f = open(f"{DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
+            f = open(f"{self.emulator_instance.DEFAULT_ULTRA_RETRO_PATH}/controllers.cfg")
             data = json.load(f)
             self.button_list = data['controllers']
             for ctr in self.controllers:
@@ -203,7 +207,7 @@ class JoystickControllers:
                                     if self.controller2_buttons['joy_a'] == 1:
                                         self.window.focus_get().invoke()
                                     if self.controller2_buttons['joy_b'] == 1:
-                                        back_to_menu()
+                                        self.emulator_instance.back_to_menu()
                                     if self.controller2_buttons['joy_y'] == 1:
                                         print(self.assigned_keys)
                                     if self.controller2_buttons['joy_start'] == 1:
@@ -216,7 +220,7 @@ class JoystickControllers:
                                 if self.controller1_buttons['joy_a'] == 1:
                                     self.window.focus_get().invoke()
                                 if self.controller1_buttons['joy_b'] == 1:
-                                    back_to_menu()
+                                    self.emulator_instance.back_to_menu()
                                 if self.controller1_buttons['joy_y'] == 1:
                                     print(self.assigned_keys)
                                 if self.controller1_buttons['joy_lt'] == 1:
@@ -249,16 +253,28 @@ class JoystickControllers:
                                 for i in range(hats):
                                     hat = joystick.get_hat(i)
                                     if hat == (0, -1):
-                                        move_focus_down()
+                                        self.emulator_instance.move_focus_down()
                                     if hat == (0, 1):
-                                        move_focus_up()
+                                        self.emulator_instance.move_focus_up()
                                     if self.window.title() != "UltraRetro":
                                         if hat == (0, -1):
-                                            move_focus_down()
+                                            self.emulator_instance.move_focus_down()
                                         if hat == (-1, 0):
-                                            access_emulator(self.emulator, self.index - 40)
+                                            self.emulator_instance.access_emulator(self.emulator_name, self.index - 40)
                                         if hat == (1, 0):
-                                            access_emulator(self.emulator, self.index)
+                                            self.emulator_instance.access_emulator(self.emulator_name, self.index)
                 except Exception:
                     pass
             self.window.after(1, self.find_events)
+
+    def on_key_press(self, event):
+        if event.char.lower() == "s":
+            self.emulator_instance.move_focus_down()
+        elif event.char.lower() == "w":
+            self.emulator_instance.move_focus_up()
+        elif event.char.lower() == "" or event.char.lower() == "b":
+            if self.window.title() == "UltraRetro":
+                self.window.destroy()
+            else:
+                self.emulator_instance.back_to_menu()
+
