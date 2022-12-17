@@ -140,7 +140,8 @@ def get_buttons_from_controllers_file(device_uid, device_name, controller_number
                     buttons_mednafen["right"] = "abs_5+"
         # print(buttons_mednafen)
         user = os.popen('whoami').read()
-        if user == "root":
+        print(user)
+        if user.replace("\n", "") == "root":
             mednafen_dir = "/root/.mednafen"
         else:
             mednafen_dir = f"/home/{user}/.mednafen".replace("\n", "")
@@ -155,6 +156,8 @@ def get_buttons_from_controllers_file(device_uid, device_name, controller_number
             new_thread = Thread(target=task)
             new_thread.start()
 
+        global start_time
+        print("My program took", time.time() - start_time, "to run")
     except Exception:
         print(Exception)
         pass
@@ -182,6 +185,7 @@ def save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, control
                             switch_button = True
                     if switch_button:
                         user = os.popen('whoami').read()
+                        user = user.replace("\n", "")
                         if user == "root":
                             mednafen_dir = "/root/.mednafen"
                         else:
@@ -191,8 +195,9 @@ def save_data_mednafen_file(mednafen_line, device_uid, buttons_mednafen, control
                             file_write.seek(0)  # rewind
                             new_mednafen_file = old_file.replace(mednafen_line, new_button)
                             file_write.write(new_mednafen_file)
-                            print(new_button)
-                            global start_time
-                            print("My program took", time.time() - start_time, "to run")
+                            # print(new_button)
+                            # global start_time
+                            # print("My program took", time.time() - start_time, "to run")
     except Exception:
+        print("ERROR")
         pass

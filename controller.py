@@ -4,8 +4,6 @@ from mednafen_controller import mednafen_controller_config
 from tkinter import *
 import time
 import json
-from threading import Thread
-from functools import partial
 
 
 class JoystickControllers:
@@ -72,10 +70,13 @@ class JoystickControllers:
                             # Writing to mednafen file
                             mednafen_controller_config(device_dict, device_name, controller_number,
                                                        self.emulator_instance)
-                            # task = partial(mednafen_controller_config, device_dict, device_name, controller_number,
-                            #                self.emulator_instance)
                             print(f"{mednafen_controller_config}, {device_dict}, {device_name}, {controller_number}",
                                   {self.emulator_instance})
+                            # Using thread to call mednafen_controller_config, turns out that it takes longer with more
+                            # threads, if we use the same thread the application will be slow until the function ends.
+                            # Using more threads will take longer but the performance is better.
+                            # task = partial(mednafen_controller_config, device_dict, device_name, controller_number,
+                            #                self.emulator_instance)
                             # thread = Thread(target=task)
                             # thread.start()
         self.controllers_data_loaded = True

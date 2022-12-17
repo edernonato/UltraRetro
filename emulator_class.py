@@ -5,8 +5,15 @@ from start_window import initial_screen
 from PIL import Image, ImageTk
 from threading import Thread
 import pathlib
-from tk_video_eder import tkvideo
+from tk_video_mod import tkvideo
 import re
+
+
+def remove_widgets(window_to_destroy):
+    # window_to_destroy.destroy()
+    for widget in window_to_destroy.winfo_children():
+        widget.destroy()
+    window_to_destroy.destroy()
 
 
 class Emulator:
@@ -73,7 +80,7 @@ class Emulator:
 
         # noinspection PyBroadException
         try:
-            self.remove_widgets(self.buttons_frame)
+            remove_widgets(self.buttons_frame)
             # buttons_frame.destroy()
         except Exception:
             pass
@@ -138,11 +145,12 @@ class Emulator:
             self.video_frame = Frame(self.window)
             self.video_label = Label(self.video_frame)
             self.player = tkvideo(f"{self.ROMS_FOLDER}/{self.emulator_current_focus}/videos", self.video_label, loop=0,
-                                  size=(800, 600), video_list=games)
+                                  size=(800, 600), video_list=games, frames_to_display=300)
             self.video_frame.place(x=600, y=200)
             self.video_label.grid(row=0, column=0)
             self.player.play_list()
         except Exception:
+            print("Something Went Wrong with the generate_preview_emulator_videos class!")
             pass
 
     def remove_preview_emulator_videos(self):
@@ -186,7 +194,7 @@ class Emulator:
     def access_emulator(self, emulator, index):
         self.emulator_clicked = emulator
         self.current_index = -1
-        self.remove_widgets(self.buttons_frame)
+        remove_widgets(self.buttons_frame)
         path = f"{self.ROMS_FOLDER}/{emulator}/"
         self.roms = os.listdir(path)
         updated_roms = []
@@ -236,10 +244,10 @@ class Emulator:
             yscale = self.mednafen_emulators_name[emulator][1]
             xscale = self.mednafen_emulators_name[emulator][2]
             mednafen_emulator = self.mednafen_emulators_name[emulator][0]
-            # os.system(f"pasuspender -- /usr/games/mednafen -{mednafen_emulator}{yscale} "
-            #           f"-{mednafen_emulator}{xscale} '{ROMS_FOLDER}/{emulator}/{rom}'")
-            os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} "
+            os.system(f"pasuspender -- /usr/games/mednafen -{mednafen_emulator}{yscale} "
                       f"-{mednafen_emulator}{xscale} '{self.ROMS_FOLDER}/{emulator}/{rom}'")
+            # os.system(f"/usr/games/mednafen -{mednafen_emulator}{yscale} "
+            #           f"-{mednafen_emulator}{xscale} '{self.ROMS_FOLDER}/{emulator}/{rom}'")
         elif emulator in self.Applications['PCSXR']:
             os.system(f"/usr/games/pcsxr -nogui -cdfile '{self.ROMS_FOLDER}/{emulator}/{rom}'")
         elif emulator in self.Applications['Snes9x EX']:
@@ -431,15 +439,9 @@ class Emulator:
         self.joystick.update_root(self.window)
         self.window.mainloop()
 
-    def remove_widgets(self, window_to_destroy):
-        window_to_destroy.destroy()
-        # for widget in window_to_destroy.winfo_children():
-        #     widget.destroy()
-        # window_to_destroy.destroy()    
-
     def back_to_menu(self):
         self.current_index = 0
-        self.remove_widgets(self.buttons_frame)
+        remove_widgets(self.buttons_frame)
         # remove_widgets(window)
         initial_screen(self.window)
         label1 = Label(self.window, image=self.DEFAULT_BG)
@@ -462,5 +464,12 @@ class Emulator:
         self.exit_button = Button(self.buttons_frame)
         self.exit_button.configure(fg="white", width=30, height=5, text="Exit", font=("Arial", 8, "italic"),
                                    highlightcolor="White", highlightthickness=0, bg="Black",
-                                   command=self.window.destroy)
+                                   command=self.exit_application)
         self.exit_button.grid(row=7, column=2, columnspan=2, pady=10)
+
+    def exit_application(self):
+        # noinspection PyBroadException
+        try:
+            self.window.destroy()
+        except Exception:
+            print("Error when quiting the application")
