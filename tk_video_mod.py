@@ -44,9 +44,14 @@ class tkvideo():
             rom_list = ["video1.mp4, "video2.mp4"]
             In this case instead of run tkvideo.play(), you should run tkvideo.play_list()
 
+        FYI: "self.frames_to_display" is the number of frames that are going to be displayed before skipping to the next
+        video in the list, if you want to display the entire video change the value to None
+        e.g : if the frames_to_display is set to 300, there will be display only 300 frames of that video before
+        skipping to the next
+
     """
 
-    def __init__(self, path, label, loop=0, size=(640, 360), video_list=None):
+    def __init__(self, path, label, loop=0, size=(640, 360), video_list=None, frames_to_display=None):
         self.path = path
         self.label = label
         self.loop = loop
@@ -54,6 +59,7 @@ class tkvideo():
         self.frame_data = None
         self.should_return = False
         self.video_list = video_list
+        self.frames_to_display = frames_to_display
 
     def load(self, path, label, loop):
         """
@@ -110,9 +116,14 @@ class tkvideo():
             reproduce = f"{path}/{video_list[game_index]}"
             frame_data = imageio.get_reader(reproduce)
             game_name = video_list[game_index].replace(".mp4", "").replace("-video", "")
+            count = 0
             for image in frame_data.iter_data():
+                count += 1
                 frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
                 label.config(text=game_name, image=frame_image, compound='bottom', bg='black', fg='white')
                 label.image = frame_image
+                if self.frames_to_display is not None:
+                    if count > self.frames_to_display:
+                        self.load_list(path, video_list, label)
                 if self.should_return:
                     return
