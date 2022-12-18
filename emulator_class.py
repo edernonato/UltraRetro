@@ -470,6 +470,11 @@ class Emulator:
     def exit_application(self):
         # noinspection PyBroadException
         try:
+            self.player.stop()
+        except Exception:
+            print("Error when quiting the application")
+        # noinspection PyBroadException
+        try:
             self.window.destroy()
         except Exception:
             print("Error when quiting the application")

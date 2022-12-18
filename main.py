@@ -5,7 +5,6 @@ from start_window import initial_screen
 from controller import JoystickControllers
 import os
 
-
 matplotlib.use('Agg')
 BACKGROUND_COLOR = "Black"
 
