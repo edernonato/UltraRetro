@@ -9,13 +9,6 @@ from tk_video_mod import tkvideo
 import re
 
 
-def remove_widgets(window_to_destroy):
-    # window_to_destroy.destroy()
-    for widget in window_to_destroy.winfo_children():
-        widget.destroy()
-    window_to_destroy.destroy()
-
-
 class Emulator:
     def __init__(self, window):
         self.ROMS_FOLDER = "/usr/games/roms"
@@ -35,6 +28,8 @@ class Emulator:
         self.DEFAULT_BG = None
         self.joystick = None
         self.emulator_clicked = None
+        self.controller_configuration_label = None
+        self.configuring_controllers = False
         self.text_label = None
         self.video_label = None
         self.emulator_current_focus = None
@@ -76,11 +71,18 @@ class Emulator:
         self.label_images = {}
         self.current_index = 1
 
+    def remove_widgets(self, window_to_destroy):
+        # window_to_destroy.destroy()
+        for widget in window_to_destroy.winfo_children():
+            if widget != self.controller_configuration_label:
+                widget.destroy()
+        window_to_destroy.destroy()
+
     def buttons_frame_start(self):
 
         # noinspection PyBroadException
         try:
-            remove_widgets(self.buttons_frame)
+            self.remove_widgets(self.buttons_frame)
             # buttons_frame.destroy()
         except Exception:
             pass
@@ -169,7 +171,15 @@ class Emulator:
         except Exception:
             pass
 
-    def generate_text_label(self, emulator_focus):
+    def generate_controller_configuration_label(self):
+        self.controller_configuration_label = Label(text="Loading controller configuration",
+                                                    font=("Arial", 12, "italic"))
+        self.controller_configuration_label.place(x=1680, y=1040)
+
+    def remove_controller_configuration_label(self):
+        self.controller_configuration_label.destroy()
+
+    def generate_emulator_description_label(self, emulator_focus):
         self.emulator_current_focus = emulator_focus
         if self.window.title() == "UltraRetro":
             # noinspection PyBroadException
@@ -183,7 +193,7 @@ class Emulator:
                 pass
         self.generate_preview_emulator_videos()
 
-    def remove_text_label(self):
+    def remove_emulator_description_label(self):
         # noinspection PyBroadException
         try:
             self.text_label.destroy()
@@ -194,7 +204,7 @@ class Emulator:
     def access_emulator(self, emulator, index):
         self.emulator_clicked = emulator
         self.current_index = -1
-        remove_widgets(self.buttons_frame)
+        self.remove_widgets(self.buttons_frame)
         path = f"{self.ROMS_FOLDER}/{emulator}/"
         self.roms = os.listdir(path)
         updated_roms = []
@@ -220,6 +230,8 @@ class Emulator:
         label_buttons = Label(self.buttons_frame, image=bg_game_buttons_frame, background="Black")
         label_buttons.place(x=0, y=0, relwidth=1, relheight=1)
         self.generate_roms(self.roms, index, self.final_index, emulator)
+        if self.configuring_controllers:
+            self.generate_controller_configuration_label()
         # Button created for testing 1
         # cmd = partial(controller_config, 1)
         # user = os.popen('whoami').read()
@@ -234,7 +246,6 @@ class Emulator:
         #                      command=cmd)
         # new_button2.grid(row=1, column=5)
         self.joystick.update_emulator_index(len(self.roms), emulator, self.final_index)
-
         self.move_focus_down()
         self.joystick.update_root(self.window)
         self.window.mainloop()
@@ -299,7 +310,7 @@ class Emulator:
         # current_rom_focus = buttons[rom_games[index]]    
 
     def move_focus_down(self):
-        self.remove_text_label()
+        self.remove_emulator_description_label()
         button = self.buttons_frame.winfo_children()[self.current_index]
         button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
 
@@ -330,11 +341,11 @@ class Emulator:
             button_text = ""
 
         button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
-        self.generate_text_label(button.cget('text'))
+        self.generate_emulator_description_label(button.cget('text'))
         self.display_game_img(button_text)
 
     def move_focus_up(self):
-        self.remove_text_label()
+        self.remove_emulator_description_label()
         # display_game_img("")
         button = self.buttons_frame.winfo_children()[self.current_index]
         button.configure(bg="Black", highlightbackground='Black', highlightthickness=0)
@@ -362,7 +373,7 @@ class Emulator:
             button_text = ""
 
         button.configure(bg="Red", highlightbackground='Yellow', highlightthickness=5, highlightcolor="Purple")
-        self.generate_text_label(button.cget('text'))
+        self.generate_emulator_description_label(button.cget('text'))
         self.display_game_img(button_text)
 
     def format_image_file_name(self, image_text):
@@ -441,7 +452,7 @@ class Emulator:
 
     def back_to_menu(self):
         self.current_index = 0
-        remove_widgets(self.buttons_frame)
+        self.remove_widgets(self.buttons_frame)
         # remove_widgets(window)
         initial_screen(self.window)
         label1 = Label(self.window, image=self.DEFAULT_BG)
@@ -452,7 +463,9 @@ class Emulator:
         self.create_emulators_list(0)
         self.generate_exit_button()
         self.joystick.update_root(self.window)
-        self.update_application()
+        if self.configuring_controllers:
+            self.generate_controller_configuration_label()
+        # self.update_application()
         self.window.mainloop()
 
     def generate_exit_button(self):

@@ -23,7 +23,7 @@ def start():
     window.update()
     window.bind('<KeyPress>', joysticks.on_key_press)
     emulator.create_emulators_list(0)
-    emulator.update_application()
+    # emulator.update_application()
     window.mainloop()
 
 

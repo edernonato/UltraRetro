@@ -45,6 +45,8 @@ class Mednafen:
 
 # Function used to generate the mednafen GUID String. Variable named 'device'.
     def mednafen_controller_config(self):
+        self.emulator_instance.generate_controller_configuration_label()
+        self.emulator_instance.configuring_controllers = True
         controller_mednafen_guid = []
         for line in range(len(self.devices_file_lines)):
             self.device_name = self.device_name.replace(" ", "")
@@ -158,6 +160,9 @@ class Mednafen:
                 new_thread.start()
 
             print("My program took", time.time() - self.start_time, "to run")
+            self.emulator_instance.remove_controller_configuration_label()
+            self.emulator_instance.configuring_controllers = False
+
         except Exception:
             print(Exception)
             pass
